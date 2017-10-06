@@ -1,0 +1,180 @@
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0 in}
+\setlength{\evensidemargin}{0 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,graphicx}
+\usepackage[document]{ragged2e}
+\usepackage[Euler]{upgreek}
+\usepackage{amsthm}
+
+\usepackage[backend=biber]{biblatex}
+\addbibresource{ref.bib}
+
+\graphicspath{{./rsc/}{./rsc/pdf/}{./rsc/svg/}}
+
+% Define mathbfit
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+\DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{n}
+
+% Define operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\minimize}{Minimize}
+\DeclareMathOperator*{\maximize}{Maximize}
+
+% Define textbfit
+\makeatletter
+\DeclareRobustCommand\bfseriesitshape{
+  \not@math@alphabet\itshapebfseries\relax
+  \fontseries\bfdefault
+  \fontshape\itdefault
+  \selectfont
+}
+\makeatother
+\DeclareTextFontCommand{\textbfit}{\bfseriesitshape}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% Narrower margin
+%
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+  \pagestyle{myheadings}
+  \thispagestyle{plain}
+  \newpage
+  \setcounter{lecnum}{#1}
+  \setcounter{page}{1}
+  \noindent
+  \begin{center}
+    \framebox{
+      \vbox{
+        \vspace{2mm}
+        \hbox to 6.28in { {\bf MAT2013: Probability and Statistics \hfill Spring 2017} }
+        \vspace{4mm}
+        \hbox to 6.28in { {\Large \hfill Problem Set #1  \hfill} }
+        \vspace{2mm}
+        \hbox to 6.28in { {\hfill \hfill Name: #2\/} }
+        \vspace{2mm}
+      }
+    }
+  \end{center}
+  \vspace*{4mm}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+%\renewcommand{\cite}[1]{[#1]}
+% \def\beginrefs{\begin{list}%
+%         {[\arabic{equation}]}{\usecounter{equation}
+%          \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+%          \setlength{\labelwidth}{1.6truecm}}}
+% \def\endrefs{\end{list}}
+% \def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{remark}
+\newtheorem{properties}[theorem]{Properties}
+\newtheorem{example}[theorem]{Example}
+
+\newenvironment{prf}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{sol}{{\bf Solution:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{skt}{{\bf Sketch:}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\newcommand\E{\mathbb{E}}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{1}{Jisung Lim (2014147040)}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:x
+\section{1. Prove that if $P(\cdot)$ is a legitimate probability function and $B$
+is a set with $P(B) > 0$, then $P(\cdot|B)$ also satisfies Kolmogorov's Axioms.}
+\begin{skt}
+  $$
+  P(A|B) \underbrace{=}_{Def.} \frac{P(A \cap B)}{P(B)}
+  \underbrace{\geq}_{P(A) \geq P(A \cap B)} \frac{P(A)}{P(B)}
+  \underbrace{\geq}_{P(A) \geq 0,\,P(B) > 0} 0
+  $$
+  $$
+  P(\Omega|B) \underbrace{=}_{Def.} \frac{P(\Omega \cap B)}{P(B)}
+  \underbrace{=}_{P(\Omega \cap B) = P(B)} \frac{P(B)}{P(B)} = 1
+  $$
+  $$
+  P(\bigcup_{i=1}^{\infty} A_i | B)
+  \underbrace{=}_{Def.} \frac{P((\bigcup_{i=1}^{\infty} A_i) \cap B)}{P(B)}
+  \underbrace{=}_{Dist. law} \frac{P(\bigcup_{i=1}^{\infty} (A_i \cap B))}{P(B)}
+  \underbrace{=}_{Axiom (3)} \sum_{i=1}^{\infty} \frac{P(A_i \cap B)}{P(B)}
+  \underbrace{=}_{Def.} \sum_{i=1}^{\infty} P(A_i|B)
+  $$
+\end{skt}
+\begin{prf} \\
+  Let $(\Omega, \mathcal{A}, P)$ be a probability space, then the probability
+  measure $P$ satisfies following axioms:
+  \begin{enumerate}
+    \item $P: \mathcal{A} \rightarrow [0,\infty)$ \quad
+          (i.e. $\forall A \in \mathcal{A}, \quad P(A) \geq 0$)
+    \item $P(\Omega) = 1$
+    \item If $A_i$ is a sequence of disjoint sets that belongs to $\mathcal{A}$,
+          then
+          $$
+          P(\bigcup_{i=1}^{\infty} A_i) = \sum_{i=1}^{\infty} P(A_i)
+          $$
+  \end{enumerate}
+
+\end{prf}
+
+
+\printbibliography
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}

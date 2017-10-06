@@ -1,0 +1,75 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:latexdraw="http://latexdraw.sourceforge.net/namespaces/latexdraw"
+    version="1.1" baseProfile="full">
+    <g>
+        <g latexdraw:type="text" id="id1365989527" fill="black" latexdraw:position="">
+            <text x="120.0" y="20.0">$S$</text>
+        </g>
+        <g latexdraw:type="joinedLines" id="id1062451417">
+            <polyline
+                points="100.0,20.0 20.0,20.0 20.0,140.0 220.0,140.0 220.0,20.0 140.0,20.0 "
+                stroke-width="2.0" stroke="black" fill="none" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="joinedLines" id="id1875038333">
+            <polyline points="60.0,20.0 120.0,80.0 " stroke-width="2.0"
+                stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="joinedLines" id="id1718875030">
+            <polyline points="120.0,80.0 80.0,140.0 " stroke-width="2.0"
+                stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="joinedLines" id="id465387744">
+            <polyline points="120.0,80.0 220.0,60.0 " stroke-width="2.0"
+                stroke="black" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="ellipse" id="id393575905">
+            <ellipse cx="120.0" cy="80.0" rx="59.0" ry="39.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="text" id="id1556422744" fill="black" latexdraw:position="">
+            <text x="40.0" y="80.0">$M$</text>
+        </g>
+        <g latexdraw:type="text" id="id557574844" fill="black" latexdraw:position="b">
+            <text x="180.0" y="40.0">$L$</text>
+        </g>
+        <g latexdraw:type="text" id="id164181846" fill="black" latexdraw:position="">
+            <text x="200.0" y="120.0">$C$</text>
+        </g>
+        <g latexdraw:type="text" id="id1087854358" fill="black" latexdraw:position="b">
+            <text x="120.0" y="60.0">$A$</text>
+        </g>
+    </g>
+    <defs/>
+    <metadata>
+        <latexdraw:metadata>
+            <latexdraw:latexIncludes>\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+
+
+</latexdraw:latexIncludes>
+            <latexdraw:displayXScale>true</latexdraw:displayXScale>
+            <latexdraw:displayYScale>true</latexdraw:displayYScale>
+            <latexdraw:unit>CM</latexdraw:unit>
+            <latexdraw:zoom>1.0</latexdraw:zoom>
+            <latexdraw:magneticGridStyle>CUSTOMISED</latexdraw:magneticGridStyle>
+            <latexdraw:gridGap>20</latexdraw:gridGap>
+            <latexdraw:magneticGrid>true</latexdraw:magneticGrid>
+            <latexdraw:version>3.3.6</latexdraw:version>
+            <latexdraw:size>
+                <latexdraw:width>1680</latexdraw:width>
+                <latexdraw:height>1023</latexdraw:height>
+            </latexdraw:size>
+            <latexdraw:position>
+                <latexdraw:x>0.0</latexdraw:x>
+                <latexdraw:y>23.0</latexdraw:y>
+            </latexdraw:position>
+        </latexdraw:metadata>
+    </metadata>
+</svg>

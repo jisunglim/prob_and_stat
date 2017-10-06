@@ -1,0 +1,65 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:latexdraw="http://latexdraw.sourceforge.net/namespaces/latexdraw"
+    version="1.1" baseProfile="full">
+    <g>
+        <g latexdraw:type="joinedLines" id="id1862842945">
+            <polyline
+                points="120.0,20.0 20.0,20.0 20.0,200.0 260.0,200.0 260.0,20.0 160.0,20.0 "
+                stroke-width="2.0" stroke="black" fill="#d7d7d7"
+                fill-opacity="0.6666667" latexdraw:rotationAngle="0.0"/>
+        </g>
+        <g latexdraw:type="circle" id="id664782991">
+            <circle cx="170.0" cy="110.0" r="69.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="none"/>
+        </g>
+        <g latexdraw:type="circle" id="id694688625">
+            <circle cx="110.0" cy="110.0" r="69.0"
+                latexdraw:borderPos="outer" stroke-width="2.0"
+                stroke="black" fill="#fd0000" fill-opacity="0.54901963"/>
+        </g>
+        <g latexdraw:type="text" id="id593158147" fill="black" latexdraw:position="">
+            <text x="140.0" y="20.0">$S$</text>
+        </g>
+        <g latexdraw:type="text" id="id12330641" fill="black" latexdraw:position="">
+            <text x="80.0" y="80.0">$A$</text>
+        </g>
+        <g latexdraw:type="text" id="id700552851" fill="black" latexdraw:position="">
+            <text x="200.0" y="80.0">$B$</text>
+        </g>
+        <g latexdraw:type="text" id="id483616450" fill="black" latexdraw:position="">
+            <text x="140.0" y="100.0">$A \cap B$</text>
+        </g>
+    </g>
+    <defs/>
+    <metadata>
+        <latexdraw:metadata>
+            <latexdraw:latexIncludes>\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+
+</latexdraw:latexIncludes>
+            <latexdraw:displayXScale>true</latexdraw:displayXScale>
+            <latexdraw:displayYScale>true</latexdraw:displayYScale>
+            <latexdraw:unit>CM</latexdraw:unit>
+            <latexdraw:zoom>1.0</latexdraw:zoom>
+            <latexdraw:magneticGridStyle>CUSTOMISED</latexdraw:magneticGridStyle>
+            <latexdraw:gridGap>20</latexdraw:gridGap>
+            <latexdraw:magneticGrid>true</latexdraw:magneticGrid>
+            <latexdraw:version>3.3.6</latexdraw:version>
+            <latexdraw:size>
+                <latexdraw:width>1680</latexdraw:width>
+                <latexdraw:height>1023</latexdraw:height>
+            </latexdraw:size>
+            <latexdraw:position>
+                <latexdraw:x>0.0</latexdraw:x>
+                <latexdraw:y>23.0</latexdraw:y>
+            </latexdraw:position>
+        </latexdraw:metadata>
+    </metadata>
+</svg>

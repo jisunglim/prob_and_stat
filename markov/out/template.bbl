@@ -1,0 +1,65 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.7 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist[entry]{nty/global/}
+    \entry{RP-Babatunde-2009}{book}{}
+      \name{author}{1}{}{%
+        {{hash=45086460bc979d78c5fad932d4503459}{%
+           family={Ogunnaike},
+           family_i={O\bibinitperiod},
+           given={Babatunde\bibnamedelima A.},
+           given_i={B\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {CRC Press}%
+      }
+      \strng{namehash}{45086460bc979d78c5fad932d4503459}
+      \strng{fullhash}{45086460bc979d78c5fad932d4503459}
+      \field{sortinit}{O}
+      \field{sortinithash}{7803d2715d5e795e70382b084ab8d00e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Random Phenomena: Fundamentals of Probability and Statistics for Engineers}
+      \field{year}{2009}
+    \endentry
+    \entry{IPSUR-2010}{book}{}
+      \name{author}{1}{}{%
+        {{hash=763597dafe283954e5c4bc21ab696fe2}{%
+           family={Richard\bibnamedelima Serfozo},
+           family_i={R\bibinitperiod\bibinitdelim S\bibinitperiod},
+           given={Georgia\bibnamedelimb Institute\bibnamedelimb of\bibnamedelima Technology},
+           given_i={G\bibinitperiod\bibinitdelim I\bibinitperiod\bibinitdelim o\bibinitperiod\bibinitdelim T\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer-Verlag Berlin Heidelberg}%
+      }
+      \strng{namehash}{763597dafe283954e5c4bc21ab696fe2}
+      \strng{fullhash}{763597dafe283954e5c4bc21ab696fe2}
+      \field{sortinit}{R}
+      \field{sortinithash}{c7387613477035a752d935acfc3e3ea2}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Basics of Applied Stochastic Processes}
+      \field{year}{2009}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+

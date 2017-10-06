@@ -1,0 +1,270 @@
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0 in}
+\setlength{\evensidemargin}{0 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,graphicx}
+\usepackage[document]{ragged2e}
+\usepackage[Euler]{upgreek}
+\usepackage{amsthm}
+
+\usepackage[backend=biber]{biblatex}
+\addbibresource{ref.bib}
+
+\graphicspath{{./rsc/}{./rsc/pdf/}{./rsc/svg/}}
+
+% Define mathbfit
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+\DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{n}
+
+% Define operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\minimize}{Minimize}
+\DeclareMathOperator*{\maximize}{Maximize}
+
+% Define textbfit
+\makeatletter
+\DeclareRobustCommand\bfseriesitshape{
+  \not@math@alphabet\itshapebfseries\relax
+  \fontseries\bfdefault
+  \fontshape\itdefault
+  \selectfont
+}
+\makeatother
+\DeclareTextFontCommand{\textbfit}{\bfseriesitshape}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% Narrower margin
+%
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+  \pagestyle{myheadings}
+  \thispagestyle{plain}
+  \newpage
+  \setcounter{lecnum}{#1}
+  \setcounter{page}{1}
+  \noindent
+  \begin{center}
+    \framebox{
+      \vbox{
+        \vspace{2mm}
+        \hbox to 6.28in { {\bf MAT2013: Probability and Statistics \hfill Spring 2017} }
+        \vspace{4mm}
+        \hbox to 6.28in { {\Large \hfill Problem Set #1  \hfill} }
+        \vspace{2mm}
+        \hbox to 6.28in { {\hfill \hfill Name: #2\/} }
+        \vspace{2mm}
+      }
+    }
+  \end{center}
+  \vspace*{4mm}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+%\renewcommand{\cite}[1]{[#1]}
+% \def\beginrefs{\begin{list}%
+%         {[\arabic{equation}]}{\usecounter{equation}
+%          \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+%          \setlength{\labelwidth}{1.6truecm}}}
+% \def\endrefs{\end{list}}
+% \def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{remark}
+\newtheorem{properties}[theorem]{Properties}
+\newtheorem{example}[theorem]{Example}
+
+\newenvironment{prf}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{sol}{{\bf Solution:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{skt}{{\bf Sketch:}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\newcommand\E{\mathbb{E}}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{3}{Jisung Lim (2014147040)}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:x
+\section{Solution}
+\justify
+
+\textbf{1. Exisiting setting} \\[0.5\baselineskip]
+There exists $n$ users which is denoted by
+\begin{equation}
+  u_1, u_2, \ldots, u_n,
+\end{equation}
+and a list of enemies of $u_i$, $\mathcal{E}(u_i)$, briefly $\mathcal{E}_i$, is given.
+Let $\mathcal{F}(u_i)$, briefly $\mathcal{F}_i$,  is a list of friends of $u_i$, then we have three conditions as
+follows
+
+\begin{itemize}
+  \item Condition 1. \\
+  \begin{equation}
+    \forall i, j (\neq i) \in \{1, \ldots, n\}, \quad u_i \in \{\mathcal{E}_j\} \quad \textit{iff} \quad u_j \in \{\mathcal{E}_i\}
+  \end{equation}
+  \item Condition 2. \\
+  \begin{equation}
+    \forall i \in \{1, \ldots, n\}, \quad u_i \notin \{\mathcal{E}_i\}
+  \end{equation}
+  \item Condition 3. \\
+  For all $i, j (\neq i) \in \{1, \ldots, n\}$, $u_i$ and $u_j$ are friend \textit{iff}
+  \begin{equation}
+    \exists u_k \in \{\mathcal{E}_i\} \cap \{\mathcal{E}_j\}
+  \end{equation}
+\end{itemize}
+
+\textbf{2. Define a matrix} \\[0.5\baselineskip]
+For all $i,j \in \{1, \ldots, n\}$ let $E$ and $F$ be $n \times n$ matrices
+which is given by
+\begin{equation}
+  {(E)}_{ij} = \left\{
+  \begin{array}{ll}
+    1, \quad \textrm{if $u_i$ and $u_j$ are enemy}\\
+    0, \quad \textrm{otherwise}
+  \end{array}
+  \right.,
+\end{equation}
+and
+\begin{equation}
+  {(F)}_{ij} = \left\{
+  \begin{array}{ll}
+    1, \quad \textrm{if $u_i$ and $u_j$ are friend}\\
+    0, \quad \textrm{otherwise}
+  \end{array}
+  \right..
+\end{equation}
+
+By condition 1 and 2, the matrix $E$ is a symmetry matrix (i.e., $(E)_{ij} = (E)_{ji} \;\forall i, j$)
+and has zero diagonal entries (i.e. $E_{ii} = 0 \;\forall i$),
+hence column vectors $\mathbf{c}_j(E)$ and row vectors $\mathbf{r}_i(E)$,
+briefly $\mathbf{c}_j$ and $\mathbf{r}_i$, satisfies
+\begin{equation}
+  i = j \Rightarrow \mathbf{c}_j = \mathbf{r}_i.
+\end{equation}
+
+Now, let us consider the inner product of $\mathbf{r}_i$ and $\mathbf{c}_j$, which
+is given by
+\begin{equation}
+  \mathbf{r}_i \cdot \mathbf{c}_j
+  = \sum_{k = i}^{n} (\mathbf{r}_i)_k (\mathbf{c}_j)_k
+  = \sum_{k = i}^{n} (E)_{ik} (E)_{kj}
+  = \sum_{k = i}^{n} \mathbb{I}_k(i, j)
+\end{equation}
+where indicator function $\mathbb{I}_k(i, j)$ is
+\begin{equation}
+  \mathbb{I}_k(i, j) = \left\{
+  \begin{array}{ll}
+    1, \quad \exists u_k \in \{\mathcal{E}_i\} \cap \{\mathcal{E}_j\}\\
+    0, \quad \textrm{otherwise}
+  \end{array}
+  \right.,
+\end{equation}
+then we can say that
+\begin{equation}
+  \mathbf{r}_i \cdot \mathbf{c}_j = \left\{
+  \begin{array}{ll}
+    l_{ij}, \quad & \{\mathcal{E}_i\} \cap \{\mathcal{E}_j\} \neq \emptyset \\
+    0, \quad & \{\mathcal{E}_i\} \cap \{\mathcal{E}_j\} = \emptyset
+  \end{array}
+  \right.
+\end{equation}
+where $0 < l_{ij} < n$.
+
+\textbf{3. Find the matrix $F$ from $E$} \\[0.5\baselineskip]
+Let a $n \times n$ matrix $M = EE$, then, by (3.10),
+\begin{equation}
+  {(M)}_{ij} = \mathbf{r}_i \cdot \mathbf{c}_j = \left\{
+  \begin{array}{ll}
+    l_{ij}, \quad & \{\mathcal{E}_i\} \cap \{\mathcal{E}_j\} \neq \emptyset \\
+    0, \quad & \{\mathcal{E}_i\} \cap \{\mathcal{E}_j\} = \emptyset
+  \end{array}
+  \right.
+\end{equation}
+where $0 < l_{ij} < n$. By condition 3,
+\begin{equation}
+  {(M)}_{ij} = \left\{
+  \begin{array}{ll}
+    l_ij, \quad \textrm{if $u_i$ and $u_j$ are friend}\\
+    0,    \quad \textrm{if $u_i$ and $u_j$ are not friend}
+  \end{array}
+  \right., \quad \forall i, j(\neq i).
+\end{equation}
+
+Be careful that if $i = j$, there may be inconsistent result such that
+\begin{equation}
+  {(M)}_{ii} = \left\{
+  \begin{array}{ll}
+    0, \quad & \textrm{if}\; {\mathcal{E}_i} = \emptyset \\
+    l_{ii}, \quad & \textrm{otherwise}
+  \end{array}
+  \right.
+\end{equation}
+
+Hence, if we assume that every user $u_i$ is friend of itself, then we can
+find the matrix $F$ as follows
+\begin{equation}
+  {(F)}_{ij} = \left\{
+  \begin{array}{ll}
+    1, \quad & i = j \\
+    0, \quad & {(M)}_{ij} = 0 \\
+    {(M)}_{ij}/l_{ij}, \quad & {(M)}_{ij} = l_{ij}
+  \end{array}
+  \right.
+\end{equation}
+
+\printbibliography
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}

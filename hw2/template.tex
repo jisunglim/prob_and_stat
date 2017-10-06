@@ -1,0 +1,659 @@
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0 in}
+\setlength{\evensidemargin}{0 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,graphicx}
+\usepackage[document]{ragged2e}
+\usepackage[Euler]{upgreek}
+\usepackage{amsthm}
+
+\usepackage[backend=biber]{biblatex}
+\addbibresource{ref.bib}
+
+\graphicspath{{./rsc/}{./rsc/pdf/}{./rsc/svg/}}
+
+% Define mathbfit
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+\DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{n}
+
+% Define operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\minimize}{Minimize}
+\DeclareMathOperator*{\maximize}{Maximize}
+
+% Define textbfit
+\makeatletter
+\DeclareRobustCommand\bfseriesitshape{
+  \not@math@alphabet\itshapebfseries\relax
+  \fontseries\bfdefault
+  \fontshape\itdefault
+  \selectfont
+}
+\makeatother
+\DeclareTextFontCommand{\textbfit}{\bfseriesitshape}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% Narrower margin
+%
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+  \pagestyle{myheadings}
+  \thispagestyle{plain}
+  \newpage
+  \setcounter{lecnum}{#1}
+  \setcounter{page}{1}
+  \noindent
+  \begin{center}
+    \framebox{
+      \vbox{
+        \vspace{2mm}
+        \hbox to 6.28in { {\bf MAT2013: Probability and Statistics \hfill Spring 2017} }
+        \vspace{4mm}
+        \hbox to 6.28in { {\Large \hfill Problem Set #1  \hfill} }
+        \vspace{2mm}
+        \hbox to 6.28in { {\hfill \hfill Name: #2\/} }
+        \vspace{2mm}
+      }
+    }
+  \end{center}
+  \vspace*{4mm}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+%\renewcommand{\cite}[1]{[#1]}
+% \def\beginrefs{\begin{list}%
+%         {[\arabic{equation}]}{\usecounter{equation}
+%          \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+%          \setlength{\labelwidth}{1.6truecm}}}
+% \def\endrefs{\end{list}}
+% \def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{remark}
+\newtheorem{properties}[theorem]{Properties}
+\newtheorem{example}[theorem]{Example}
+
+\newenvironment{prf}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{sol}{{\bf Solution:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{skt}{{\bf Sketch:}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\newcommand\E{\mathbb{E}}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{2}{Jisung Lim (2014147040)}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:x
+\section{Solution}
+\justify
+\begin{enumerate}
+  \item Let $X$ be a (absolutely) continuous random variable with probability
+  density $f_X$. What is the density of $Y = X^2$?
+  \\
+  \begin{sol}
+
+    Random variable $Y$ is defined by a function of $X$, which is given by
+    \begin{equation}
+      Y = \phi(X) \quad \textrm{where} \quad \phi(X) = X^2
+    \end{equation}
+
+    First, to find the density $f_Y$, we first need to find the distribution
+    function $F_Y$, of which the density $f_Y$ is defined as a integrand:
+    \begin{equation}
+      F_Y(y) = \int_{-\infty}^{y} f_Y(t) \;\mathrm{d}t
+    \end{equation}
+
+    Now, let's consider the probability space $(\mathbb{R}, \mathcal{B}, P_Y)$
+    which is induced by the random variable $Y$ from `primitive' probability space,
+    says $(\Omega, \mathcal{A}, \mathbb{P})$. Then, the probability distribution
+    $P_Y$ for any $B \in \mathcal{B}$ is defined by
+    \begin{equation}
+      P_Y[Y \in B] = \mathbb{P}[{\{\omega \in \Omega : \omega \in Y^{-1}(B)\}}]
+    \end{equation}
+
+    and the distribution function $F_Y(y)$ is defined by the probability
+    distribution $P_Y[\cdot]$, given by
+    \begin{equation}
+      F_Y(y) = P_Y[Y \in (-\infty, y)]
+    \end{equation}
+
+    Hence, by (2.3) and (2.4), the probability distribution can be expressed as
+    follows
+    \begin{equation}
+      \begin{split}
+        F_Y(y)
+        &= P_Y[Y \in (-\infty, y)] \\
+        &= \mathbb{P}[{\{\omega \in \Omega : Y(\omega) \in (-\infty, y) \}}] \\
+        &= \mathbb{P}[{\{\omega \in \Omega : Y(\omega) < y \}}]
+      \end{split}
+    \end{equation}
+
+    and then, we can use given knoweledge (2.1), and the definition of the
+    distribution function of $X$, says $F_X(x)$,
+    \begin{equation}
+      \begin{split}
+        F_Y(y)
+        &= \mathbb{P}[{\{\omega \in \Omega : Y(\omega) < y \}}] \\
+        &= \mathbb{P}[{\{\omega \in \Omega : X^2(\omega) < y \}}] \\
+        &= \mathbb{P}[{\{\omega \in \Omega : -y^{1/2} < X(\omega) < y^{1/2} \}}] \\
+        &= \mathbb{P}[{\{\omega \in \Omega : X(\omega) <  y^{1/2} \}}]
+        -  \mathbb{P}[{\{\omega \in \Omega : X(\omega) < -y^{1/2} \}}] \\
+        &= F_X(y^{1/2}) - F_X(y^{-1/2})
+      \end{split}
+    \end{equation}
+    where
+    \begin{equation}
+      F_X(x) = P_X[X \in (-\infty, x)]
+    \end{equation}
+
+    Since the probability distribution function $f_X(x)$ is given by
+    \begin{equation}
+      F_X(x) = \int_{-\infty}^{x} f_X(t) \;\mathrm{d}t,
+    \end{equation}
+
+    $F_Y(y)$ can be expressed by
+    \begin{equation}
+      \begin{split}
+        F_Y(y)
+        &= F_X(y^{1/2}) - F_X(y^{-1/2}) \\
+        &= \int_{-y^{1/2}}^{y^{1/2}} f_X(t) \;\mathrm{d}t
+      \end{split}
+    \end{equation}
+
+    To find probability distribution function $f_Y$, find the derivative of the
+    distribution function, then we get
+    \begin{equation}
+      \begin{split}
+        f_Y(y)
+        &= \frac{\mathrm{d}F_Y(y)}{\mathrm{d}y}
+         = \frac{\mathrm{d}}{\mathrm{d}y} \left[ F_X(y^{1/2}) - F_X(y^{-1/2}) \right] \\
+        &= f_X(y^{1/2}) \frac{\mathrm{d}y^{1/2}}{\mathrm{d}y}
+         - f_X(y^{-1/2}) \frac{\mathrm{d}y^{-1/2}}{\mathrm{d}y} \\
+        &= \frac{1}{2\sqrt{y}} f_X(y^{1/2}) + \frac{1}{2y\sqrt{y}} f_X(y^{-1/2})
+      \end{split}
+    \end{equation}
+    Hence,
+    \begin{equation}
+      f_Y(y) = \frac{1}{2\sqrt{y}} f_X(y^{1/2}) + \frac{1}{2y\sqrt{y}} f_X(y^{-1/2})
+    \end{equation}
+  \end{sol}
+
+  \clearpage
+  \item A certain river floods every day. Suppose that the low-water mark is set
+  at 1 and the high-water mark $Y$ has distribution function
+  \begin{equation}
+    F_Y(y) = 1 - \frac{1}{y^2}, \quad 1 \leq y < \infty.
+  \end{equation}
+  \begin{enumerate}
+    \item Verify that $F_Y(y)$ is a distribution function. \\
+    \begin{sol} \\
+      First, investigate the convergence of the function.
+      \begin{equation}
+        \lim_{y \rightarrow \infty} F_Y(y)
+        = \lim_{y \rightarrow \infty} \left( 1 - \frac{1}{y^2} \right)
+        = 1 - \lim_{y \rightarrow \infty} \frac{1}{y^2}
+        = 1 - 0 = 1
+      \end{equation}
+      and since $F_Y(y) = 0 \quad \forall y < 1$, then
+      \begin{equation}
+        \lim_{y \rightarrow -\infty} F_Y(y) = 0
+      \end{equation}
+
+      Second, the function must be monotonously none-decreasing, i.e.,
+      \begin{equation}
+        \forall a, b \in \mathbb{R}, a < b \Rightarrow F_Y(a) \leq F_Y(b)
+      \end{equation}
+      and there are three cases.
+      \begin{enumerate}
+        \item $a < b < 1$; Since the function $F_Y(y) = 0\;\forall y < 1$, the
+        function satisfies $a < b \Rightarrow F_Y(a) = F_Y(b) = 0$, i.e., monotone
+        none-decreasing in $(-\infty, y)$.
+        \item $1 \leq a < b$; Since the function $1 - 1/y^2$ is strictly increasing
+        function, it satisfies that $a < b \Rightarrow F_Y(a) < F_Y(b)$, which
+        also satisfies monotone none-decreasing condition.
+        \item $a < 1 \leq b$; At first, $F_Y(a) = 0$. If we investigate the limit
+        point $1^+$, then
+        \begin{equation}
+          \lim_{y \rightarrow 1^{+}} F_Y(y)
+          = \lim_{y \rightarrow 1^{+}} \left( 1 - \frac{1}{y^2} \right)
+          = 1 - \lim_{y \rightarrow 1^{+}} \frac{1}{y^2}
+          = 1 - 1 = 0,
+        \end{equation}
+        Since the function $F_Y(y)$ is strictly increasing function in $[1, \infty)$,
+        $F_Y(b) > 0$ $\forall b \geq 1$. Hence, the function satisfies that
+        $a < b \Rightarrow F_Y(a) < F_Y(b)$. i.e., $F_Y(y)$ is monotone none-decreasing
+        function.
+      \end{enumerate}
+      Since the function $F_Y(y)$ is monotone none-decreasing function and satisfies
+      $\lim_{y \rightarrow \infty} F_Y(y) = 1$ and $\lim_{y \rightarrow -\infty} F_Y(y) = 0$,
+      then the function $F_Y(y)$ is distribution function.
+    \end{sol}
+    \item Find $f_Y(y)$, the pdf of $Y$. \\
+    \begin{sol} \\
+      By definition of probability density function $f_Y(y)$ and distribution
+      function $F_y(y)$
+      \begin{equation}
+        F_Y(y) = P_Y(Y \leq y)
+        = \int_{-\infty}^{y} f_Y(t) \mathrm{d}t
+        = \int_{1}^{y} f_Y(t) \mathrm{d}t
+      \end{equation}
+      By FTC1
+      \begin{equation}
+        f_Y(y) = \frac{d F_Y(y)}{dy} = \frac{2}{y^3}
+      \end{equation}
+    \end{sol}
+    \item If the low-water mark is reset at $0$ and we use a unit of measurement that
+    is $\frac{1}{10}$ of that given previously, the high-water mark become $Z =
+    10 (Y - 1)$. Find $F_Z(z)$.
+
+    \begin{equation}
+      \begin{split}
+        F_Z(z)
+        &= P_Z(Z \leq z) \\
+        &= \mathbb{P}({\{\omega \in \Omega : Z \leq z\}}) \\
+        &= \mathbb{P}({\{\omega \in \Omega : 10(Y-1) \leq z\}})
+      \end{split}
+    \end{equation}
+    Since $\phi(x) = x/10 + 1$ is monotone increasing function, then
+    $a < b \Rightarrow \phi(a) \leq \phi(b)$.
+    \begin{equation}
+      \begin{split}
+        F_Z(z)
+        &= \mathbb{P}({\{\omega \in \Omega : 10(Y-1) \leq z\}}) \\
+        &= \mathbb{P}({\{\omega \in \Omega : Y \leq z/10 + 1\}}) \\
+        &= P_Z(Y \leq z/10 + 1) = F_Y(z/10 + 1) \\
+        &= \left\{
+        \begin{array}{ll}
+          1 - \frac{1}{(z/10 + 1)^2}, & \quad 1 \leq y < \infty \\
+          0,                          & \quad \textrm{otherwise}
+        \end{array}
+        \right.
+      \end{split}
+    \end{equation}
+    Since $y \geq 1$ and $z = 10(y - 1)$, then $z \geq 0$ and therefore
+    \begin{equation}
+      F_Z(z)
+      = \left\{
+      \begin{array}{ll}
+        1 - \frac{100}{(z + 10)^2}, & \quad 0 \leq z < \infty \\
+        0,                          & \quad \textrm{otherwise}
+      \end{array}
+      \right.
+    \end{equation}
+  \end{enumerate}
+
+  \clearpage
+  \item (Geometric Distribution) Consider a random variable experiment where we
+  do Bernoulli trial independently with $P(success) = p$ until the first success
+  occurs.
+  \begin{enumerate}
+    \item Construct a proper probability space $(\Omega, \mathcal{A}, \mathbb{P})$
+    and define a proper random variable $X$ so to induce a proper PMF for it. \\
+    \begin{sol}\\
+      Given random experiment consists of sequential Benoulli subtrials which is
+      independent and homogeneous with parameter $p$. Since a trial always has
+      arbitrary $k (\geq 0)$ failures followed by last one success, then the
+      natural sample space is
+      \begin{equation}
+        \Omega = {\{ S, FS, FFS, FFFS, \ldots, \underbrace{F \ldots F}_k S, \ldots \}},
+      \end{equation}
+      and we can find specific sigma
+      algebra $\mathcal{A} \subset 2^{\Omega}$ satisfying following properties:
+      \begin{itemize}
+        \item $A \in \mathcal{A} \Rightarrow A^C \in \mathcal{A}$
+        \item $\emptyset \in \mathcal{A}$ ($\Omega \in \mathcal{A}$)
+        \item $E_1, E_2, E_3, \ldots \in \mathcal{A} \Rightarrow \bigcup_{i=1}^{\infty} E_i \in \mathcal{A}$.
+      \end{itemize}
+      Also, for any single event $E_k$ with $k$ failures preceeding the first success,
+      the probability measure $\mathbb{P}$ is defined by
+      \begin{equation}
+        \mathbb{P}(E_k) = \mathbb{P}[\{ \underbrace{F \ldots F}_k S \}]
+        = p (1-p)^k \quad \forall k \in {\{0, 1, 2, 3, \ldots \}}
+      \end{equation}
+      Therefore we now have the `primitive' probability space $(\Omega, \mathcal{A},
+      \mathbb{P})$ for our random experiment.
+      \\[0.5\baselineskip]
+
+      Now, let us define $X$ be a random variable, which is given by
+      \begin{equation}
+        X = \textrm{The number of failure preceeding the first success}
+      \end{equation}
+      then, we may consider the new probability space $(\mathbb{R}, \mathcal{B}, P_X)$
+      where $\mathbb{R}$ is real number (which contains natural number $\mathbb{N}$
+      where the probability assumed actually), $\mathcal{B}$ is Borel sigma algebra,
+      and $P_X$ is probability distribution induced by $X$ defined by
+      \begin{equation}
+        P_X(X \in B) = \mathbb{P} [{\{\omega \in \Omega : \omega \in X^{-1}(B)\}}].
+      \end{equation}
+      Then, we can evaluate the probability mass function $f_X(x)$ from the
+      probability distribution.
+      \begin{equation}
+        \begin{split}
+          f_X(x)
+          &= P_X(X = x) = P_X(X \in {\{x\}}) \\
+          &= \mathbb{P}[{\{ \omega \in \Omega : \omega \in X^{-1}({\{x\}}) \}}] \\
+          &= \mathbb{P}[{\{ \underbrace{F \ldots F}_x S \}}] \\
+          &= p (1-p)^x \quad \forall x \in {\{0, 1, 2, 3, \ldots \}}
+        \end{split}
+      \end{equation}
+    \end{sol}
+    \item Compute the mean and variance of X.\\
+    \begin{sol}\\
+      mean: $\mu$
+      \begin{equation}
+        \begin{split}
+          E[X]
+          &= \sum_{x=0}^\infty x f_X(x) = \sum_{x=0}^\infty xp{(1-p)}^x \\
+          &= p(1-p) \sum_{x=0}^\infty x{(1-p)}^{x-1} \\
+          &= p(1-p) \frac{d}{dp}\left( - \sum_{x=0}^\infty {(1-p)}^x \right) \\
+          &= p(1-p) \frac{d}{dp}\left( 1 - \frac{1}{p} \right) \\
+          &= p(1-p) \frac{1}{p^2} = \frac{1-p}{p}
+        \end{split}
+      \end{equation}
+      variance: $\sigma^2$
+      \begin{equation}
+        E[{(X-\mu)}^2] = E[X(X-1)] + E[X] - {\{E[X]\}}^2 = E[X(X-1)] + \frac{1-p}{p} - \frac{{(1-p)}^2}{p^2}
+      \end{equation}
+      where
+      \begin{equation}
+        \begin{split}
+          E[X(X-1)]
+          &= \sum_{x=0}^\infty x(x-1) f_X(x)
+           = \sum_{x=0}^\infty x(x-1) p{(1-p)}^x \\
+          &= p{(1-p)}^2 \sum_{x=0}^\infty x(x-1) {(1-p)}^{x-2} \\
+          &= p{(1-p)}^2 \frac{d^2}{dp^2}\left(\sum_{x=0}^\infty {(1-p)}^x \right) \\
+          &= p{(1-p)}^2 \frac{d^2}{dp^2}\left(\frac{1}{p} -1 \right) \\
+          &= p{(1-p)}^2 \frac{2}{p^3} = \frac{2{(1-p)}^2}{p^2}
+        \end{split}
+      \end{equation}
+      Hence,
+      \begin{equation}
+        E[{(X-\mu)}^2] = \frac{2{(1-p)}^2}{p^2} + \frac{1-p}{p} - \frac{{(1-p)}^2}{p^2} = \frac{1 - p}{p^2}
+      \end{equation}
+    \end{sol}
+    \item Prove that $X$ satisfies the memoryless property: $P(X \geq s | X \geq t) = P(X \geq s - t), s > t$.
+    \begin{sol}
+      Distribution function $F_X(x)$ is given by
+      \begin{equation}
+        F_X(x) = P_X(X \leq x) = \sum_{t=0}^{x} p{(1-p)}^t = 1 - {(1-p)}^{x+1}
+      \end{equation}
+      Then,
+      \begin{equation}
+        \begin{split}
+          P(X \geq s|X \geq t)
+          &= \frac{P(X \geq s, X \geq t)}{P(X \geq t)} = \frac{P(X \geq s)}{P(X \geq t)} \\
+          &= \frac{1 - P(X \leq s-1)}{1 - P(X \leq t-1)} = \frac{1 - F_X(s-1)}{1 - F_X(t-1)} \\
+          &= \frac{{(1-p)}^{s}}{{(1-p)}^{t}} = {(1-p)}^{s-t}
+        \end{split}
+      \end{equation}
+      Then,
+      \begin{equation}
+        P(X \geq s-t) = 1 - P(X \leq s-t-1) = 1 - F_X(s-t-1) = {(1-p)}^{s-t}
+      \end{equation}
+      Hence,
+      \begin{equation}
+        P(X \geq s | X \geq t) = P(X \geq s-t)
+      \end{equation}
+    \end{sol}
+    \item Suppose that the probability is 0.001 that a light bulb will fail on any
+    given day, then what is the probability that it will last at least 3 days.\\
+    \begin{sol}\\
+      Let the bulb failure be the success event $S$, then $p = 0.001$. Let assume
+      that the bulb failure event on any given day is independent with that events
+      on other days, then any bulb's `failure-or-not event' on a day can be viewed
+      as an event of the Bernoulli trial. Because any bulb can not fail more than
+      two times, and therefore the bulb always works well but fails on the last
+      day. Hence, we can use Geometric Random Variable $X$ given by
+      \begin{equation}
+        X = \textrm{The lifetime (day) of a light bulb, including the day of failure.}
+      \end{equation}
+      Then, the probability mass function is given by
+      \begin{equation}
+        f_X(x) = p {(1-p)}^{x-1} \quad \forall x = 1, 2, 3, \ldots
+      \end{equation}
+      and the distribution function is given by
+      \begin{equation}
+        F_X(x) = P(X \leq x) = \sum_{t=1}^{x} f_X(t) = 1-(1-p)^x
+      \end{equation}
+      Then, the probability that the bulb will last at least 3 days is
+      \begin{equation}
+        P(X \geq 3) = 1 - P(X \leq 4) = 1 - F_X(4) = {(1-p)}^4 = 0.999^4
+      \end{equation}
+    \end{sol}
+  \end{enumerate}
+
+  \clearpage
+  \item Let $X$ be a random variable having the geometric distribution with
+  $P(success)=p$.
+  \begin{enumerate}
+    \item Obtain the pdf for the random varaible $Y$ defined as
+    \begin{equation*}
+      Y = \frac{1}{X}
+    \end{equation*}
+    \begin{sol}\\
+      The probability mass function of $X$ is given by
+      \begin{equation}
+        f_X(x) = {p}{(1-p)}^{x-1} \quad \forall x = 1, 2, 3, \ldots
+      \end{equation}
+      and by definition
+      \begin{equation}
+        \begin{split}
+          f_Y(y)
+          &= P_Y(Y = y) = \mathbb{P}(\{ Y = y \}) \\
+          &= \mathbb{P}(\{ 1/X = y \}) \\
+          &= \mathbb{P}(\{ X = 1/y \}) \\
+          &= P_X(X = 1/y) = f_X(1/y) \\
+          &= {p}{(1-p)}^{\frac{1}{y}-1}
+        \end{split}
+      \end{equation}
+    \end{sol}
+    \item Obtain $E[Y]$ and compare it to $E[X]$. \\
+    \begin{sol} \\
+      $E[Y]$ \\
+      Let us take the sequence $(y_k)_{k \in \mathbb{N}}$ in $\mathbb{R}$, which is given by
+      \begin{equation}
+        y_k = \frac{1}{x_k} = \frac{1}{k} \quad \forall k \in \mathbb{N}
+      \end{equation}
+      then we can evalute the $E[Y]$ as follows
+      \begin{equation}
+        \begin{split}
+          E[Y]
+          &= \sum_{k \in \mathbb{N}} y_k f_Y(y_k) \\
+          &= \sum_{k \in \mathbb{N}} y_k p{(1-p)}^{1/y_k - 1} \\
+          &= \frac{p}{1-p} \sum_{k \in \mathbb{N}} \frac{1}{k} {(1-p)}^k
+        \end{split}
+      \end{equation}
+      Since ${(1-p)}^k/k = \int -{(1-p)}^{k-1} dp + C'$, then
+      \begin{equation}
+        \begin{split}
+          E[Y]
+          &= \frac{p}{1-p} \sum_{k \in \mathbb{N}} \frac{1}{k} {(1-p)}^k \\
+          &= \frac{p}{1-p} \sum_{k \in \mathbb{N}} \left( \int - {(1-p)}^{k-1} \;dp + C \right) \\
+          &= \frac{p}{1-p} \left( \int - \sum_{k \in \mathbb{N}} {(1-p)}^{k-1} \;dp + C \right) \\
+          &= \frac{p}{1-p} \left( \int - \frac{1}{p}\; dp + C \right) \\
+          &= \frac{p}{1-p} \left( C - \ln p \right)
+        \end{split}
+      \end{equation}
+      Intuitively, if $p \rightarrow 1$, then $E[Y] \rightarrow 1$, then $C = 0$.
+      Hence,
+      \begin{equation}
+        E[Y] = - \frac{p}{1-p} \ln p
+      \end{equation}
+      Since $E[X] = (1-p)/p^2$, then
+      \begin{equation}
+        E[Y] = \frac{1}{E[X]} \left( \frac{1}{p} \ln \frac{1}{p} \right)
+      \end{equation}
+    \end{sol}
+  \end{enumerate}
+  \clearpage
+  \item Given a random variable $X$ with pdf $f_X = 1$ for $0 < x < 1$ and any
+  two points $a_1, a_2$ in the interval (0, 1), such that $a_1 < a_2$ and $a_1 +
+  a_2 \leq b$,
+  \begin{enumerate}
+    \item show that
+    \begin{equation*}
+      P[a_1 < X < (a_1 + a_2)] = a_2.
+    \end{equation*}
+    \begin{sol}\\
+      From the probability distribution function $f_X(x)$, we can find distribution
+      function $F_X(x)$, which is given by
+      \begin{equation}
+        F_X(x) =
+        \left\{
+        \begin{array}{lr}
+          0, \quad & x \leq 0 \\
+          x, \quad & 0 < x < 1 \\
+          1, \quad & x \geq 1
+        \end{array}
+        \right.
+      \end{equation}
+      Since $F_X(x) = P[X < x] = P[X \leq x]$, then
+      \begin{equation}
+        \begin{split}
+          P[a_1 < X < (a_1 + a_2)]
+          &= P[X < (a_1 + a_2)] - P[X \leq a_1] \\
+          &= F_X(a_1 + a_2) - F_X(a_1) \\
+          &= a_1 + a_2 - a_1 = a_2
+        \end{split}
+      \end{equation}
+    \end{sol}
+    \item In general, if $f(x)$ is uniform in the interval $(a,b)$, and if $a \leq a_1$,
+    $a_1 \leq a_2$, and $a_1 + a_2 \leq b$, show that
+    \begin{equation*}
+      P[a_1 < X < (a_1 + a_2)] = \frac{a_2}{b-a}.
+    \end{equation*}
+    \begin{sol}
+      First, probability density $f(x)$ and distribution function $F(x)$ is given by
+      \begin{equation}
+        f(x) = \left\{
+        \begin{array}{ll}
+          \frac{1}{b-a}, & \quad a < x < b \\
+          0,             & \quad \textrm{otherwise}
+        \end{array}
+        \right.
+      \end{equation}
+      and
+      \begin{equation}
+        F(x) = \left\{
+        \begin{array}{lr}
+          0,                  & \quad x \leq a \\
+          \frac{1}{b-a}(x-a), & \quad a < x < b \\
+          1,                  & \quad x \geq b
+        \end{array}
+        \right.
+      \end{equation}
+      Since $F(x) = P[X < x] = P[X \leq x]$, then
+      \begin{equation}
+        \begin{split}
+          P[a_1 < X < (a_1 + a_2)]
+          &= P[X < (a_1 + a_2)] - P[X \leq a_1] \\
+          &= F(a_1 + a_2) - F(a_1) \\
+          &= \frac{a_1 + a_2 - a}{b-a} - \frac{a_1 - a}{b-a} = \frac{a_2}{b-a}
+        \end{split}
+      \end{equation}
+    \end{sol}
+  \end{enumerate}
+  \clearpage
+  \item Compute the varaince $Var(X)$ of a random variable $X$ following binomial
+  distribution.\\
+  \begin{sol}\\
+    Let the parameter of binomial random variable is given by $n$ and $p$, each of
+    which indicate the total number of the Bernoulli trial and $P(success)$ of
+    those trials, respectively. Then, PMF of binomial random variable $X$ is given
+    by
+    \begin{equation}
+      f_X(x; n, p) = \binom{n}{x} p^x {(1-p)}^{n-x}.
+    \end{equation}
+    Then, first the mean $\mu$ is given by
+    \begin{equation}
+      \begin{split}
+        \mu
+        &= E[X] = \sum_{x = 0}^{n} x f_X(x; n, p) \\
+        &= \sum_{x = 1}^{n} x\frac{n!}{x! (n-x)!} p^x {(1-p)}^{n-x} \\
+        &= \sum_{x = 1}^{n} np\frac{(n-1)!}{(x-1)! (n-x)!} p^{x-1} {(1-p)}^{n-x} \\
+        &= np \sum_{x = 1}^{n} \binom{n-1}{x-1} p^{x-1} {(1-p)}^{n-x} \\
+        &= np \sum_{x = 0}^{n-1} \binom{n-1}{x} p^{x} {(1-p)}^{(n-1)-x} \\
+        &= np \sum_{x = 0}^{n-1} f_X(x; n-1, p) = np
+      \end{split}
+    \end{equation}
+
+    and then, $E[X^2]$ is given by
+    \begin{equation}
+      \begin{split}
+        E[X^2]
+        &= \sum_{x=0}^{n} x^2 f_X(x; n, p) = \sum_{x = 1}^{n} x^2 \binom{n}{x} p^x {(1-p)}^{n-x} \\
+        &= np \sum_{x = 0}^{n-1} (x+1) \binom{n-1}{x} p^{x} {(1-p)}^{(n-1)-x} \\
+        &= np \left[ \sum_{x = 0}^{n-1} xf_X(x; n-1, p) + \sum_{x = 0}^{n-1} f_X(x; n-1, p) \right] \\
+        &= np \left[ np \sum_{x = 0}^{n-1} f_X(x; n-2, p) + 1 \right] \\
+        &= np((n-1)p + 1)
+      \end{split}
+    \end{equation}
+
+    Then,
+    \begin{equation}
+      \begin{split}
+        Var[X] = E[X^2] - {\{E[X]\}}^2 = np((n-1)p+1) - (np)^2 = np(1-p) = npq
+      \end{split}
+    \end{equation}
+  \end{sol}
+\end{enumerate}
+
+
+
+\printbibliography
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}

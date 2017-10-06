@@ -1,0 +1,663 @@
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0 in}
+\setlength{\evensidemargin}{0 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,graphicx,mathtools}
+\usepackage[document]{ragged2e}
+\usepackage[Euler]{upgreek}
+\usepackage{amsthm}
+\usepackage{mdframed}
+
+\usepackage[backend=biber]{biblatex}
+\addbibresource{ref.bib}
+
+\graphicspath{{./rsc/}{./rsc/pdf/}{./rsc/svg/}}
+
+\expandafter\def\expandafter\normalsize\expandafter{%
+    \normalsize
+    \setlength\abovedisplayskip{15pt}
+    \setlength\belowdisplayskip{15pt}
+    \setlength\abovedisplayshortskip{15pt}
+    \setlength\belowdisplayshortskip{15pt}
+}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% Narrower margin
+%
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+  \pagestyle{myheadings}
+  \thispagestyle{plain}
+  \newpage
+  \setcounter{lecnum}{#1}
+  \setcounter{page}{1}
+  \noindent
+  \begin{center}
+    \framebox{
+      \vbox{
+        \vspace{2mm}
+        \hbox to 6.28in { {\bf Pattern Recognition and Machine Learning~\cite{IPSUR-2010}~\cite{RP-Babatunde-2009} \hfill Spring 2017} }
+        \vspace{4mm}
+        \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+        \vspace{2mm}
+        \hbox to 6.28in { {\it Lecturer: #3 \hfill Scribes: #4\/} }
+        \vspace{2mm}
+      }
+    }
+  \end{center}
+  \markboth{Lecture #1: #2}{Lecture #1: #2}
+  {\textbf{Scribes}}: {
+    Jisung Lim,
+    \textit{B.S. Candidate of Industrial Engineering
+    in Yonsei University, South Korea.}
+  }
+
+  {\textbf{Disclaimer}}: {
+    \textit{These notes have not been subjected to the
+    usual scrutiny reserved for formal publications.  They may be distributed
+    outside this class only with the permission of the Instructor.}
+  }
+  \vspace*{4mm}
+}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+
+%%%% Box
+\newmdenv[leftline=false,rightline=false]{tb}
+\newenvironment{hlbox}
+{
+  \vspace*{5mm}
+  \begin{tb}
+}
+{
+  \end{tb}
+  \vspace*{1mm}
+}
+
+% Use these for theorems, lemmas, proofs, etc.
+\theoremstyle{definition}
+
+% Definition
+\newtheorem{definition}{Definition}[section]
+\AtEndEnvironment{definition}{\qed}%
+
+\newenvironment{bdef}
+{\vspace*{5mm}\begin{tb}\begin{definition}}
+{\end{definition}\end{tb}\vspace*{2mm}}
+
+% Theorem
+\newtheorem{theorem}{Theorem}[section]
+\AtEndEnvironment{theorem}{\qed}%
+
+\newenvironment{bthrm}
+{\vspace*{5mm}\begin{tb}\begin{theorem}}
+{\end{theorem}\end{tb}\vspace*{2mm}}
+
+% Corollary
+\newtheorem{corollary}[theorem]{Corollary}
+\AtEndEnvironment{corollary}{\qed}%
+
+\newenvironment{bcrly}
+{\vspace*{5mm}\begin{tb}\begin{corollary}}
+{\end{corollary}\end{tb}\vspace*{2mm}}
+
+% Lemma
+\newtheorem{lemma}[theorem]{Lemma}
+\AtEndEnvironment{lemma}{\qed}%
+
+\newenvironment{blma}
+{\vspace*{5mm}\begin{tb}\begin{lemma}}
+{\end{lemma}\end{tb}\vspace*{2mm}}
+
+% Proposition
+\newtheorem{proposition}[theorem]{Proposition}
+\AtEndEnvironment{proposition}{\qed}%
+
+\newenvironment{bprpn}
+{\vspace*{5mm}\begin{tb}\begin{proposition}}
+{\end{proposition}\end{tb}\vspace*{2mm}}
+
+% Claim
+\newtheorem{claim}[theorem]{Claim}
+\AtEndEnvironment{claim}{\qed}%
+
+\theoremstyle{remark}
+\newtheorem{properties}[theorem]{Properties}
+
+%%%% Define example tools
+\theoremstyle{remark}
+\newtheorem{innerexample}[theorem]{Example}
+\makeatletter
+\patchcmd{\endinnerexample}{\endtrivlist}{\endlist}{}{}
+\newenvironment{example}
+ {\patchcmd{\@thm}{\trivlist}{\list{}{\leftmargin=3em \rightmargin=3em}}{}{}%
+  \vspace*{10\p@}
+  \innerexample\pushQED{\hfill\ensuremath{\Diamond}}}
+ {\popQED\endinnerexample}
+\makeatother
+
+\newenvironment{exskt}
+{\begin{list}{}{\leftmargin=3em \rightmargin=3em}\item{\bf Sketch.}}
+{\hfill\ensuremath{\qed}\vspace*{5mm}\end{list}}
+
+\newenvironment{exprf}
+{\begin{list}{}{\leftmargin=3em \rightmargin=3em}\item{\bf Proof.}}
+{\hfill\ensuremath{\qed}\vspace*{5mm}\end{list}}
+
+\newenvironment{exsol}
+{\begin{list}{}{\leftmargin=3em \rightmargin=3em}\item{\bf Solution.}}
+{\hfill\ensuremath{\qed}\vspace*{5mm}\end{list}}
+
+%%%% Define solving tools
+\newenvironment{skt}{{\bf Sketch:}}{}
+\newenvironment{prf}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{sol}{{\bf Solution:}}{\hfill\rule{2mm}{2mm}}
+
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+% Define operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\minimize}{Minimize}
+\DeclareMathOperator*{\maximize}{Maximize}
+
+\DeclareMathOperator*{\dotcup}{\dot{\cup}}
+
+% Define Logical operators
+\providecommand{\land}{\wedge}
+\providecommand{\lior}{\vee}
+\providecommand{\lxor}{\veebar}
+\providecommand{\limpl}{\rightarrow}
+\providecommand{\lImpl}{\Rightarrow}
+\providecommand{\liff}{\leftrightarrow}
+\providecommand{\lIff}{\Leftrightarrow}
+
+% Define mathbb
+\newcommand\E{\mathbb{E}}
+
+% Define mathbfit
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+\DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{n}
+
+% Define textbfit
+\makeatletter\DeclareRobustCommand\bfseriesitshape{\not@math@alphabet\itshapebfseries\relax\fontseries\bfdefault\fontshape\itdefault\selectfont}\makeatother\DeclareTextFontCommand{\textbfit}{\bfseriesitshape}
+
+% Distributionally equal
+\newcommand\deq{\mathrel{\overset{\makebox[0pt]{\mbox{\normalfont\small d}}}{=}}}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{1}{Stochastic Processes: Markov Chains}{Jisung Lim}{Jisung Lim}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:x
+\justify
+
+\tableofcontents
+
+\section{Probability Space and Random Variable}
+
+\subsection{Probability Space}
+The underlying frame of reference for random variables or a stochastic process
+is a probability space. A sample space is given by
+\begin{equation}
+  (\Omega, \mathcal{F}, P)
+\end{equation}
+where
+\begin{equation*}
+  \begin{array}{ll}
+    \Omega       & \quad \textrm{sample space (A entire set of possibleoutcomes)} \\
+    \mathcal{F}  & \quad \textrm{$\sigma$-algebra (event space)}                  \\
+    P            & \quad \textrm{probability measure.}
+  \end{array}
+\end{equation*}
+The Kolmogorov's axioms and useful properties are as follows:
+\begin{enumerate}
+  \item $A \in \mathcal{F}$, $P(A) \geq 0$, and $P(\Omega \setminus A) = 1 - P(A)$
+  \item $P(\Omega) = 1$, and $P(\emptyset) = 0$
+  \item $P(\cup_{n} A_n) = \sum_{n} P(A_n)$ for infinite collection of disjoint set $A_n$.
+  \item $P(A) \leq P(B)$, $A \subseteq B$
+  \item $P(A_n) \rightarrow P(A)$ if $A_n \uparrow A$ or $A_n \downarrow A$
+\end{enumerate}
+
+
+
+\subsection{Measurable space and measurable function}
+
+\begin{definition}
+  Suppose $(S, \mathcal{E})$, $(S', \mathcal{E}')$, are measurable spaces with
+  associated $\sigma$-algebra and let $f:(S, \mathcal{E}) \rightarrow (S', \mathcal{E}')$
+  be a function on measurable sapce $S$. The function $f$ is measurable if
+  \begin{equation}
+    f^{-1}(A) = {\{ x \in S : f(x) \in A \}} \in \mathcal{E},
+    \quad \textrm{for each} \quad A \in \mathcal{E}'
+  \end{equation}
+\end{definition}
+
+That is, the set of all $x$'s that $f$ maps to $A$ is in $\mathcal{E}$. It
+is fair to discuss about the operations between functions, especially the
+composition operations.
+
+\begin{theorem}
+  Let $(S, \mathcal{E})$, $(S', \mathcal{E}')$, $(S'', \mathcal{E}'')$ be
+  measurable spaces with associated $\sigma$-algebra. If $f:S \rightarrow S'$
+  and $g:S' \rightarrow S''$ are measurable and $f(S) \subseteq S'$ then the
+  composition function $g \circ f: S \rightarrow S''$ is also measurable.
+\end{theorem}
+
+\subsection{Random variable}
+At first, in this material, we concerns classical real-valued random variables.
+A random variable $X$ on a probability space $(\Omega, \mathcal{F}, P)$ is a
+measurable mapping from $\Omega$ to $\mathbb{R}$.
+\begin{equation}
+  X: (\Omega, \mathcal{F}) \rightarrow (\mathbb{R}, \mathcal{B})
+\end{equation}
+The measurability of $X$ ensures that $\mathcal{F}$ contains all set of
+the form
+\begin{equation}
+  {\{X \in B\}} = {\{ \omega \in \Omega : X(\omega) \in B \}}, \quad B \in \mathcal{B}
+\end{equation}
+These are the type of events for which $P$ is defined.
+
+\subsection{Measurability of random variable and $\sigma$-algebra}
+A measurability of the random variable ensures the probability measure $P_X$
+of $X$ to be defined well on the measurable space $(S, \mathcal{E})$.
+This is because that the probability measure $P_X$ on $(S, \mathcal{E})$
+induced by random variable $X$ is defined by
+\begin{equation}
+  P_X(B) \coloneqq P \circ X^{-1}(B) = P{\{ \omega \in \Omega : X(\omega) \in B \}},
+  \quad B \in \mathcal{E}
+\end{equation}
+so as to construct state space $(S, \mathcal{E}, P_X)$ from $(\Omega, \mathcal{F}, P)$.
+
+Here, we may have question about where the $\sigma$-algebra comes from.
+That discussion is beyond the scope of this material, however, we assume
+that one usually constructs the $\sigma$-algebra $\mathcal{F}$ which is
+large enough so that the random variables of interest are measurable. For
+instance, if $X$, $Y$, and $Z$ are of interest, one can let $\mathcal{F} =
+\sigma(X, Y, Z)$ be the smallest $\sigma$-algebra containing all sets of
+the form for $X$, $Y$, and $Z$, so that they are measurable.
+
+\subsection{Distribution function}
+All of the probability information of $X$ in ``isolation'' (not associated
+with other random quantities on the probability space) is contained in its
+\textit{distribution function}
+\begin{equation}
+  F(x) = P{\{ X \leq x \}}, \quad x \in \mathbb{R}
+\end{equation}
+
+\section{Random Elements and Stochastic Processes}
+
+\subsection{Real to General}
+A unified way of discussing random vectors, stochastic processes and other
+random quantities is in terms of random elements. Suppose one is interested
+in a random element that takes values in a space $S$ with a $\sigma$-field
+$\mathcal{E}$. A \textit{random elements in} $\mathcal{E}$, defined on a
+probability space $(\Omega, \mathcal{F}, P)$, is a measurable mapping $X$
+from $\Omega$ to $S$. Here the $X$ is also called an \textit{$S$-vauled
+random variable}.
+\begin{equation}
+  X: (\Omega, \mathcal{F}) \rightarrow (S, \mathcal{E}) \quad \textrm{; $S$-valued random variable}
+\end{equation}
+Here the space $S$ may become a countable set (Markov chain), a Euclidean space
+(random vector), or a function space with a distance metric (stochastic process).
+
+To accomodate these and other spaces as well, we adopt the standard convention
+that $(S, \mathcal{E})$ is a \textit{Polish space}. That is, $S$ is a metric
+space that is \textit{complete} and \textit{separable}; and $\mathcal{E}$ is
+the borel $\sigma$-algebra generated by the open sets.
+
+The \textit{probability distribution} of a random element $X$ is $S$ is the
+probability measure
+\begin{equation}
+  F_X(B) = P{\{ \omega \in \Omega : X(\omega) \in B \}} = P \circ X^{-1} (B), \quad B \in \mathcal{E}
+\end{equation}
+
+\subsection{Stochastic Process}
+\textit{Loosely speaking}, a stochastic process is a collection of random
+variables (or random elements) defined on a single probability space.
+Hereafter, we will simply use the term ``random elements'' (which includes
+random variables), and let $(S, \mathcal{E})$ denote the Polish space where
+they reside.
+
+A \textit{discrete-time stochastic process} is a collection of random elements
+given by
+\begin{equation}
+  X = {\{ X_n \in S : n \in \mathbb{N} \}}
+\end{equation}
+where the random variables $X_n$ are in $S$ and defined on a probability
+space $(\Omega, \mathcal{F}, P)$.
+
+Here the following terms are as follows
+\begin{equation*}
+  \begin{array}{ll}
+    n \in \mathbb{N}  & \quad \textrm{time parameter} \\
+    (S, \mathcal{E})  & \quad \textrm{state space of the process} \\
+    X_n(\omega) \in S & \quad \textrm{state at time $n$ with the outcome $\omega$}
+  \end{array}
+\end{equation*}
+
+
+\textit{Note that}, $X = {\{X_n\}}_{n \in \mathbb{N}}$ is also a random element
+in the infinite product space $S^{\infty}$ with the product $\sigma$-algebra
+$\mathcal{E}^{\infty}$. Its distribution $P(X \in B)$ for $B \in \mathcal{E}^{\infty}$,
+is uniquely defined in terms of its \textit{finite-dimensional distributions},
+given by
+\begin{equation}
+  P{\{ X_1 \in B_1, \ldots, X_n \in B_n \}}, \quad B_j \in \mathcal{E}, n \in \mathbb{N}.
+\end{equation}
+
+
+\subsection{Summary}
+\begin{itemize}
+  \item a stochastic process is a family of random variables or random elements
+  defined on a probability space that contains all the probability information
+  about the process.
+  \item We will use the standard convention of suppressing the $\omega$ in
+  random elements such as $X_n$ or $X(t)$, and not displaying the underlying
+  probability space $(\Omega, \mathcal{F}, P)$ unless it is essential for the
+  exposition.
+\end{itemize}
+
+\section{Markov Chains}
+A sequence of random variables $X_0, X_1, \ldots$ with values in a countable
+set $S$ is a Markov chain if at any time $n$, the future states (or values)
+$X_{n+1}, X_{n+2}, \ldots$ depend on the history $X_0, X_1, \ldots, X_n$ only
+through the present state $X_n$.
+
+Markov chains are fundamental stochastic processes that have many diverse
+application. This is because a Markov chain represents any dynamical system
+whose states satisfy the recursion
+\begin{equation}
+  X_n = f(X_{n-1}, Y_n), \quad n \in \mathbb{N} \setminus {\{0\}}
+\end{equation}
+where $Y_1, Y_2, \ldots$ are iid and $f$ is deterministic function. That is
+the new state $X_n$ is simply a function of the last state $X_{n-1}$ and
+an auxiliary random variable $Y_n$.
+
+\subsection{Introduction and definition}
+Let $(\Omega, \mathcal{F}, P)$ be a probability space and $X_n$'s be $S$-valued
+random variables given by
+\begin{equation}
+  X_n : (\Omega, \mathcal{F}) \rightarrow (S, \mathcal{E}).
+\end{equation}
+where $S$ be a countable set. We then define the discrete-time stochastic
+process on $S$ given by
+\begin{equation}
+  X = {\{ X_n \in S : n \in \mathbb{N} \}}
+\end{equation}
+where $S$ is the state space of the process and $n$ is the time parameter.
+Here the $X$ is also a random variable which has the form of
+\begin{equation}
+  X : (\Omega, \mathcal{F}) \rightarrow (S^{\infty}, \mathcal{E}^{\infty}).
+\end{equation}
+
+
+For the measurable space $(S^{\infty}, \mathcal{E}^{\infty})$ induced by $X$,
+we can find \textit{finite-dimensional distributions} of the process given by
+\begin{equation}
+  P{\{ X_0 = i_0, X_1 = i_1, \ldots, X_N = i_N \}}, \quad i_0, \ldots, i_N \in S, N \in \mathbb{N}
+\end{equation}
+These probabilites uniquely determines the probabilities of all events of the
+process. Consequently, two stochastic processes are equal in distribution
+if their finite-dimensional distributions are equal.
+
+Various types of stochastic processes are defined by
+\begin{itemize}
+  \item specifying the dependency among the variables that determine
+  the finite-dimensional distributions, or
+  \item specifying the manner in which the process evolves over time.
+\end{itemize}
+A Markov chain is defined as follows.
+
+\begin{definition}
+  A stochastic process $X = {X_n \in S : n \in \mathbb{N}}$ on a countable set
+  $S$ is a \textit{Markov Chain} if, for any $i,j \in S$ and $n \in mathbb{N}$,
+  \begin{itemize}
+    \item Markov property; $P{\{X_{n+1} = j | X_0, \ldots, X_n\}} = P{\{X_{n+1} = j | X_n\}}$
+    \item Time homogenuity: $P{\{X_{n+1} = j | X_n = i\}} = p_{ij}$
+  \end{itemize}
+  where $p_{ij}$ is ``time-homogeneous'' transition probabilities.
+\end{definition}
+
+
+\subsection{Probabilities of sample path}
+Here the \textit{transition probability} $p_{ij}$ is a probability that
+the Markov chain jumps from state $i$ to state $j$ and the matrix
+$\mathsf{P} = (p_{ij})$ is the \textit{transition matrix} of the chain.
+This transition probabilities satisfy followings:
+\begin{enumerate}
+  \item Let any $i \in S$,
+  \begin{equation}
+    \sum_{j \in S} p_{ij} = \sum_{j \in S} P{\{X_{n+1} = j | X_n = i\}} = 1.
+  \end{equation}
+  \item Let $\alpha_i = P{\{ X_0 = i \}}$ be an \textit{initial distribution}.
+  Then, for any $i_0, i_1, \ldots, i_n \in S$ and $n \in \mathbb{N}$,
+  \begin{equation}
+    P{\{ X_0 = i_0, \ldots, X_n = i_n \}} = \alpha_{i_0} p_{i_0, i_1} \cdots p_{i_{n-1}, i_n}.
+  \end{equation}
+  \item The probability of the Markov chain having a sample path in a subset
+  $\mathcal{P} \subset S^{n+1}$ up to time $n$ is given by
+  \begin{equation}
+    P{\{ (X_0, \ldots, X_n) \in \mathcal{P} \}}
+    = \sum_{(X_0, \ldots, X_n) \in \mathcal{P}} P{\{ X_0 = i_0 \}} p_{i_0, i_1} \cdots p_{i_{n-1}, i_n},
+  \end{equation}
+  or equivalently,
+  \begin{equation}
+    P{\{ (X_0, \ldots, X_n) \in \mathcal{P} | X_0 = i_0 \}}
+    = \sum_{(i_0, X_1, \ldots, X_n) \in \mathcal{P}} p_{i_0, i_1} \cdots p_{i_{n-1}, i_n}.
+  \end{equation}
+  \item From the result of third property, we can find the $k$-step distribution
+  given by
+  \begin{equation}
+    P{\{ X_k = i_k | X_0 = i_0 \}}
+    = \sum_{i_1 \in S} P_{i_0 i_1}
+      \sum_{i_2 \in S} P_{i_1 i_2} \cdots
+      \sum_{i_{k-1} \in S} P_{i_{k-1} i_k}
+  \end{equation}
+  \item From the transition matrix $\mathsf{P} = (p_{ij})$ and its $n$th
+  product $\mathsf{P}^n$, $n \geq 0$.
+  \begin{enumerate}
+    \item By definition, $\mathsf{P}^0 = 0$ and
+    $\mathsf{P}^n = \mathsf{P}^{n-1} \mathsf{P}$, for $n \geq 1$.
+    \item Let $p_{ij}^n$ denote the $(i, j)$th entry of $\mathsf{P}^n$.
+  \end{enumerate}
+  \item $n$-step probabilities.
+  \begin{equation}
+    P{\{ X_n = j | X_0 = i \}} = p_{ij}^n
+  \end{equation}
+  and letting $\alpha = (\alpha_i)$ be a row vector of initial distributions,
+  \begin{equation}
+    P{\{ X_n = j \}} = (\alpha\mathsf{P}^n)_j
+  \end{equation}
+\end{enumerate}
+
+\subsection{Construction of Markov Chain}
+This section addresses the following questions. Is there a general framework for
+constructing or identifying Markov chains? Is there a Markov chain associated
+with any transition matrix? If so, how is it constructed? Here is a general
+construction of a Markov chain via a general recursive equation.
+
+
+Suppose ${\{ X_n : n \in \mathbb{N} \}}$ is a stochastic process on $S$ of the
+form
+\begin{equation}
+  X_n = f(X_{n-1}, Y_n), \quad n \geq 1,
+\end{equation}
+where $f: S \times S' \rightarrow S$ and $Y_1,Y_2,\ldots$ are
+\textit{$S'$-valued iid random variables} and $S'$ is independent of $X_0$.
+Then $X_n$ is a Markov chain with transition probabilities
+$p_{ij} = P{\{ f(i, Y_1) = j \}}$, which is given by
+\begin{equation}
+  \begin{split}
+    P{\{ X_{n+1} = j | X_0, \ldots X_{n-1}, X_n = i \}}
+    &= P{\{ f(i, Y_{n+1}) = j | X_0, \ldots, X_{n-1}, X_n = i \}} \\
+    &= P{\{ f(i, Y_{n+1}) = j \}} = p_{ij}
+  \end{split}
+\end{equation}
+
+\subsection{Stationary distribution}
+\begin{definition}
+  A probability measure $\pi$ on $S$ is a \textit{stationary distribution} for
+  the Markov chain $X_n$ (or for $\mathsf{P}$) if
+  \begin{equation}
+    \pi_i = \sum_{j} \pi_j p_{ji}, \quad i \in S,
+  \end{equation}
+  or equivalently in matrix notation,
+  \begin{equation}
+    \pi = \pi \mathsf{P}
+  \end{equation}
+  where $\pi = (\pi_i : i \in S)$ is a low vector. In general, $\eta$ with
+  $\sum_{i}\eta_i \leq \infty$ that satisfies $\eta = \eta \mathsf{P}$ is
+  an \textit{invariant measure} for $\mathsf{P}$.
+\end{definition}
+
+\begin{definition}
+  A stochastic process ${\{ X_n : n \geq 0 \}}$ on a general state space is
+  \textit{stationary} if, for any $n \geq 0$,
+  \begin{equation}
+    (X_n, \ldots, X_{n+k}) \deq (X_0, \ldots, X_k), \quad k \geq 1
+  \end{equation}
+  That is, the finite-dimensional distributions of $X_n$ remain the same if
+  the time is shifted by any amount $n$. A stationary process is sometimes
+  said to be a process that is in \textit{equilibrium} or in \textit{steady
+  state}.
+\end{definition}
+
+\begin{theorem}
+  The following statements are equivalent for the Markov chain $X_n$.
+  \begin{enumerate}
+    \item $X_n$ is stationary.
+    \item $X_n \deq X_0, \quad n \geq 1$.
+    \item The distribution of $X_0$ is a stationary distribution.
+  \end{enumerate}
+\end{theorem}
+
+\subsection{Ergodicity}
+\begin{theorem}
+   The Markov chain is called ergodic if it is irreducible, and its
+   states are positive recurrent and aperiodic.
+\end{theorem}
+
+\begin{theorem}
+  (Stationary Distribution)  An irreducible Markov chain $X_n$ has
+  a positive stationary distribution if and only if all of its states
+  are positive recurrent. In that case, the stationary distribution
+  is unique. In that case, the stationary distribution is unique and
+  has the following form: For any fixed $i \in S$,
+  \begin{equation}
+    \pi_j
+    = \frac{E_i \left[ \sum_{n=0}^{\tau_i - 1} \mathbf{1}(X_n = j) \right]}{\mu_i}
+    \quad j \in S
+  \end{equation}
+  where $\tau_i = \min{\{ n \in \mathbb{N}\setminus{\{0\}} : X_n = i\}}$ and
+  $\mu_i = E_i [\tau_i]$. Or equivalently, $\pi_j = 1/\mu_j$, $j \in S$.
+\end{theorem}
+
+\begin{theorem}
+  An irreducible aperiodic Markov chain is ergodic if and only if it
+  has a stationary distribution. In this case, the stationary
+  distribution is positive and has the form shown in Theorem 1.3.3.
+\end{theorem}
+
+\begin{theorem}
+  If a Markov chain is ergodic, then its stationary distribution is its
+  limiting distribution, which is positive.
+\end{theorem}
+
+\begin{theorem}
+  For an irreducible, aperiodic Markov chain, the following statements
+  are equivalent.
+  \begin{enumerate}
+    \item The chain is ergodic.
+    \item The chain has a stationary distribution.
+    \item The chain has a limiting distribution.
+  \end{enumerate}
+\end{theorem}
+
+\subsection{Strong Laws of Large Number}
+
+\begin{theorem}
+  (Classical SLLN) If $Y_1, Y_2, \ldots$ are iid random variables with a mean
+  that may be infinite, then
+  \begin{equation}
+    \lim_{n\rightarrow\infty} \frac{1}{n}\sum_{i=1}^{n}Y_i = E[Y_1] \quad a.s.
+  \end{equation}
+\end{theorem}
+
+\begin{theorem}
+  The average time between visits to state $i$ is
+  \begin{equation}
+    \lim_{n\rightarrow\infty} \frac{1}{\tau_n} = \frac{1}{\pi_i}
+  \end{equation}
+  The average number of visits to state $i$ is
+  \begin{equation}
+    \lim_{n\rightarrow\infty} \frac{1}{N_i(n)} = \pi_i
+  \end{equation}
+\end{theorem}
+
+\begin{theorem}
+  For the ergodic Markov chain $X_n$ with stationary distribution $\pi$ and
+  any $f: S \rightarrow \mathbb{R}$,
+  \begin{equation}
+    \lim_{n\rightarrow\infty} \frac{1}{n}\sum_{i=1}^{n} f(X_i) = \sum_i f(i) \pi_i
+  \end{equation}
+\end{theorem}
+
+\subsection{Markov Chain Monte Carlo}
+There are a variety of statistical problems in which one uses Monte Carlo
+simulations for estimating expectations of the form
+\begin{equation}
+  \mu = \sum_{i \in S} g(i)\pi_i
+\end{equation}
+where $\pi$ is a specified probability measure and $g: S \rightarrow \mathbb{R}$.
+A standard Markov chain Monte Carlo approach is to construct an ergodic Markov
+transition matrix whose stationary distribution is $\pi$. Then for a sample path
+$X_1, \ldots, X_n$ of the chain, an estimator for $\mu$ is
+\begin{equation}
+  \hat{\mu}_n = \frac{1}{n} \sum_{i=1}^{n}g(X_i)
+\end{equation}
+By theorem 1.3.9 for Markov chains, $\hat{\mu} \rightarrow \mu$, and so
+$\hat{\mu}$ is a consistent estimator of $\mu$.
+
+\clearpage
+\printbibliography
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}

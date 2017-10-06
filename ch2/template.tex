@@ -1,0 +1,814 @@
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0 in}
+\setlength{\evensidemargin}{0 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,graphicx,mathtools}
+\usepackage[document]{ragged2e}
+\usepackage[Euler]{upgreek}
+\usepackage{amsthm}
+
+\usepackage[backend=biber]{biblatex}
+\addbibresource{ref.bib}
+
+\graphicspath{{./rsc/}{./rsc/pdf/}{./rsc/svg/}}
+
+% Define mathbfit
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+\DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{n}
+
+% Define operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\minimize}{Minimize}
+\DeclareMathOperator*{\maximize}{Maximize}
+
+\DeclareMathOperator*{\dotcup}{\dot{\cup}}
+
+% Define textbfit
+\makeatletter
+\DeclareRobustCommand\bfseriesitshape{
+  \not@math@alphabet\itshapebfseries\relax
+  \fontseries\bfdefault
+  \fontshape\itdefault
+  \selectfont
+}
+\makeatother
+\DeclareTextFontCommand{\textbfit}{\bfseriesitshape}
+
+\expandafter\def\expandafter\normalsize\expandafter{%
+    \normalsize
+    \setlength\abovedisplayskip{15pt}
+    \setlength\belowdisplayskip{15pt}
+    \setlength\abovedisplayshortskip{15pt}
+    \setlength\belowdisplayshortskip{15pt}
+}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% Narrower margin
+%
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+  \pagestyle{myheadings}
+  \thispagestyle{plain}
+  \newpage
+  \setcounter{lecnum}{#1}
+  \setcounter{page}{1}
+  \noindent
+  \begin{center}
+    \framebox{
+      \vbox{
+        \vspace{2mm}
+        \hbox to 6.28in { {\bf MAT2013: Probability and Statistics~\cite{IPSUR-2010}~\cite{RP-Babatunde-2009} \hfill Spring 2017} }
+        \vspace{4mm}
+        \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+        \vspace{2mm}
+        \hbox to 6.28in { {\it Lecturer: #3 \hfill Scribes: #4\/} }
+        \vspace{2mm}
+      }
+    }
+  \end{center}
+  \markboth{Lecture #1: #2}{Lecture #1: #2}
+  {\textbf{Scribes}}: {
+    Jisung Lim,
+    \textit{B.S. Candidate of Industrial Engineering
+    in Yonsei University, South Korea.}
+  }
+
+  {\textbf{Disclaimer}}: {
+    \textit{These notes have not been subjected to the
+    usual scrutiny reserved for formal publications.  They may be distributed
+    outside this class only with the permission of the Instructor.}
+  }
+  \vspace*{4mm}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+%\renewcommand{\cite}[1]{[#1]}
+% \def\beginrefs{\begin{list}%
+%         {[\arabic{equation}]}{\usecounter{equation}
+%          \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+%          \setlength{\labelwidth}{1.6truecm}}}
+% \def\endrefs{\end{list}}
+% \def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\AtEndEnvironment{definition}{\qed}%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{remark}
+\newtheorem{properties}[theorem]{Properties}
+%\newtheorem{example}[theorem]{Example}
+%\AtEndEnvironment{example}{\hfill\ensuremath{\Diamond}}%
+
+\theoremstyle{remark}
+\newtheorem{innerexample}[theorem]{Example}
+
+\makeatletter
+\patchcmd{\endinnerexample}{\endtrivlist}{\endlist}{}{}
+\newenvironment{example}
+ {\patchcmd{\@thm}{\trivlist}{\list{}{\leftmargin=3em \rightmargin=3em}}{}{}%
+  \vspace*{10\p@}
+  \innerexample\pushQED{\hfill\ensuremath{\Diamond}}}
+ {\popQED\endinnerexample}
+\makeatother
+
+
+\newenvironment{prf}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{sol}{{\bf Solution:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{skt}{{\bf Sketch:}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\newcommand\E{\mathbb{E}}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{2}{Random Variables}{Jae Guk, Kim}{Jisung Lim}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:x
+\section{Review}
+\justify
+So far, we've learned about how to specify \textbf{probability space} from random
+experiment as follows:
+\begin{equation}
+(\Omega, \mathcal{A}, \mathbb{P})
+\end{equation}
+where $\Omega$ is sample space, $\mathcal{A}$ is $\sigma$-$algebra$, and
+$\mathbb{P}$ is probability mass (or dense). We gathered all possible outcomes of
+random experiment into the sample space, learned how event space is constructed,
+briefly dealt with the special collection called $\sigma$-$algebra$ to construct
+measurable space $(\Omega, \mathcal{A})$. And also, we learned how to assign
+probabilities on events, defined the probability function $\mathbb{P}: \mathcal{A}
+\rightarrow [0, \infty)$ which completely satisfies Kolmogorov axioms thanks to
+$\sigma$-$algebra$, and learned numerous concepts to deal with the probability
+function in a mathematical framework. Finally, we got the probability space
+$(\Omega, \mathcal{A}, \mathbb{P})$.
+
+\begin{example}
+  From the simple coin tossing experiment, we can construct the probability
+  space as follows
+  \begin{equation*}
+    \begin{gathered}
+      \Omega = {\{H, T\}} \\
+      \mathcal{A} = {\{\emptyset,\,{\{H\}},\,{\{T\}},\,{\{H, T\}} \}} \\
+      \mathbb{P}: \mathcal{A} \rightarrow [0, 1] \\
+      \textrm{with} \\
+      \mathbb{P}(\emptyset) = 0,\,
+      \mathbb{P}(\{ H \}) = \mathbb{P}(\{ T \}) = \frac{1}{2},\,
+      \mathbb{P}(\{ H, T \}) = 1
+    \end{gathered}
+  \end{equation*}
+\end{example}
+
+\section{Random Variable}
+\subsection{Mathematical Concept of the Random Variable}
+But our sample space may quite tedious to describe and inefficient to analyze
+mathematically if its elements are not numbers. To facilitate mathematical analysis,
+it is desired to find a means of converting this sample space into one with real
+numbers. This is achieved via the vehicle of the \textbfit{random variable}
+defined as follows:
+
+\begin{definition}
+  Given a random experiment with a sample space $\Omega$, let there be a function
+  $X$, which assigns to each element $w \in \Omega$, one and only one real number
+  $X(w) = x$. This function $X$ is called a random variable.
+  \begin{equation}
+    X: \Omega \rightarrow \mathbb{R}
+  \end{equation}
+\end{definition}
+In rigorous (measure-theoretic) probability theory, the function $X$ is also
+required to be measurable (see Appendix. Random Variable). For later use,
+we will use the definition of random experiment with the concept of probability
+space which is given by
+\begin{equation*}
+  X: (\Omega, \mathcal{A}) \rightarrow (\mathbb{R}, \mathcal{B})
+\end{equation*}
+and also define $P_X$ as
+\begin{equation*}
+  \forall B \in \mathcal{B},\quad P_X(X \in B) \coloneqq \mathbb{P}(\{\omega \in \Omega : X(\omega) \in B\})
+\end{equation*}
+on $(\mathbb{R}, \mathcal{B})$ using $\mathbb{P}$ on $(\Omega, \mathcal{A})$. Now,
+let us look at a few examples to get a better understanding about the concept.
+\begin{example}
+  Let's get back to the \textit{Example} 2.1.1, the coin tossing experiment, again.
+
+  First, we may define the random variable $X$ as follows
+  \begin{equation*}
+    \begin{split}
+      X: (\Omega, \mathcal{A}) &\rightarrow (\mathbb{R}, \mathcal{B}) \\
+      H &\mapsto 0 \\
+      T &\mapsto 1,
+    \end{split}
+  \end{equation*}
+
+  then we can evaluate the probability of each event in $\mathcal{B}$
+  \begin{equation*}
+    \begin{split}
+      P_X(X = 0) = P_X(X \in \{0\})
+      &= \mathbb{P}(\{\omega \in \Omega | X(\omega) \in \{0\}\})
+      = \mathbb{P}(H) = \frac{1}{2}\\
+      P_X(X = 1) = P_X(X \in \{1\})
+      &= \mathbb{P}(\{\omega \in \Omega | X(\omega) \in \{1\}\})
+      = \mathbb{P}(T) = \frac{1}{2} \\
+      P_X(X \in \mathbb{R}\setminus\{0, 1\})
+      &= \mathbb{P}(\{\omega \in \Omega | X(\omega) \in \mathbb{R}\setminus\{0, 1\}\})
+      = \mathbb{P}(\emptyset) = 0
+    \end{split}
+  \end{equation*}
+
+  and then we finally induce the function $P_X$ as follows
+  \begin{equation*}
+    P_X = \left\{
+    \begin{array}{ll}
+      1/2, & \quad X \in {\{0\}} \\
+      1/2, & \quad X \in {\{1\}} \\
+      0,   & \quad \textrm{otherwise}
+    \end{array}
+    \right.
+  \end{equation*}
+
+  Therefore, the probability space mapped by random variable $X$ is given by
+  \begin{equation*}
+    (\mathbb{R}, \mathcal{B}, P_X)
+  \end{equation*}
+\end{example}
+
+We also may pre-specify the outcomes in natural way to apply a random variable
+implicitly, to map the ``primitive'' outcomes into numbers.
+\begin{example} Consider the coin tossing experiment again, but now the outcome
+  is the number of H (head) in an experiment. In this example, the outcome
+  implicitly contains the application of random variable which has the form of
+  \begin{equation*}
+    \begin{split}
+      X: (\Omega, \mathcal{A}) &\rightarrow (\mathbb{R}, \mathcal{B}) \\
+      H &\mapsto 1 \\
+      T &\mapsto 0,
+    \end{split}
+  \end{equation*}
+
+  Hence, we can define the probability distribution $P_X$ and so that can define
+  probability space $(\mathbb{R}, \mathcal{B}, P_X)$, directly.
+\end{example}
+
+
+
+\begin{example} Consider the random experiment that toss a coin three times and
+  the outcome is the ``primitive'' one.
+
+  The number of head is
+  we may
+  Let $X(\omega) = (\textrm{\# of } T \in \omega)$ be a random experiment, then
+
+  \begin{equation*}
+    \begin{split}
+      X(HHH) &= 0 \\
+      X(HHT) &= X(HTH) = X(THH) = 1 \\
+      X(HTT) &= X(THT) = X(TTH) = 2 \\
+      X(TTT) &= 3
+    \end{split}
+  \end{equation*}
+
+
+  Let $V = \{ 0, 1, 2, 3 \}$ and $\mathcal{F} = 2^V$, then, By $X$, our probability
+  space $(\Omega, \mathcal{A}, P)$ is mapped to $(V, \mathcal{F}, P_X)$. And we
+  can define
+  $$
+  P_X = (\{ 0, 1 \}) := P(\{ \omega \in \Omega : X(\omega) \in \mathcal{A} \})
+  $$
+  which is called ``induced probability function on $\mathcal{F}$ by $X$.
+  in short, probability distribution on $\mathcal{F}$.''
+\end{example}
+
+\subsection{Induced Probability Function}
+As we can see in the above \textit{Example} 2.2.1 and 2.2.2, what we want to do
+with random variable $X$ is to map the sample space $\Omega$ into $\mathbb{R}$
+(or $\mathbb{R}^n$), so as to deal with the induced probability function $P_X$
+on $\mathbb{R}$ where we can take much more advantage, such as numerous existing
+models (distributions) mathematically well-defined, have been used practically
+for a long time and therefore qualified successfully.
+
+Formally, we define random variable $X$, and then map our original probability
+space $(\Omega, \mathcal{A}, \mathbb{P})$ into the new, advantageous one
+$(\mathbb{R}, \mathcal{B}, P_X)$.
+\begin{equation}
+  \begin{split}
+    X: (\Omega, \mathcal{A}) &\rightarrow (\mathbb{R}, \mathcal{B}) \\
+    \omega &\mapsto x
+  \end{split}
+\end{equation}
+Then, we can define the probability function $P_X$ as follows:
+\begin{equation}
+  \forall B \in \mathcal{B}, \quad P_X(X \in B) \coloneqq \mathbb{P}(\{w \in \Omega : X(w) \in B\})
+\end{equation}
+which is called ``induced probability function $P_X$ on $\mathcal{B}$ by $X$.''
+In short, \textbfit{probability distribution} on $\mathcal{B}$~\cite{ONLINE-1}.
+
+\section{Probability Distribution $P_X$}
+Suppose that we model a random experiment so as to define probability space
+$(\Omega, \mathcal{A}, \mathbb{P})$ and that $X$ is a random variable for the
+experiment taking values in a set $\mathbb{R}$. (Not required to choose $\mathbb{R}$.
+It's just specific example to make our understanding clear.) Any random variable $X$
+for the experiment defines a new probability space $(\mathbb{R}, \mathcal{B}, P_X)$.
+Now, we will focus on the probability measure (or probability distribution) $P_X$
+of $X$ and how they look like so that we will categorize the random variable $X$.
+
+\subsection{Classification of Random Variable~\cite{ONLINE-2}}
+A random variable $X$ is called \textbfit{continuous} if and only if the probability
+measure $P_X$ of the random variable $X$ satisfies $P_X(X = x) = 0$ for each $x$.
+By contrast, a \textbfit{discrete} random variable is one that has a finite or
+countably infinite set of possible values $x$ with $P_X(X=x) > 0$ (i.e., $\exists x_n$ s.t. $P_X(X=x_n) > 0$).
+Continuous random variable and discrete random variable are dichotomy.~\cite{ONLINE-3}
+
+\subsection{Discrete Random Variable and PMF}
+For every discrete random variable $X$, we define a function, \textbfit{probability
+mass function} (PMF), namely $f_X$, defined by
+\begin{equation}
+  f_X(x) =
+  \left\{
+    \begin{array}{ll}
+      P_X(X = x), & \forall x \in R(X) \\
+      0,         & \forall x \in \mathbb{R} \setminus R(X)
+    \end{array}
+  \right.
+\end{equation}
+
+\begin{example}
+  {\bf Coin-tossing}\\
+  \begin{equation*}
+    \begin{gathered}
+      \Omega = \{ H, T \} \\
+      \mathcal{A} = \{ \emptyset, \{H\}, \{T\}, \{H, T\} \} \\
+      P(\emptyset) = 0, P(\{H\}) = P(\{T\}) = 1/2, P(\{ H, T \}) = 1
+    \end{gathered}
+  \end{equation*}
+  Define Random variable $X: (\Omega, \mathcal{A}) \rightarrow (\mathbb{R}, \mathcal{B})$
+  as $X(H) = 0, X(T) = 1$, then a new probability space is given by
+  \begin{equation*}
+    \begin{gathered}
+      (\mathbb{R}, \mathcal{B}, P_X) \\
+      \mathrm{where} \\
+      \forall B \in \mathcal{B},\quad
+      P_X(X \in B) = P(\{ \omega \in \Omega : X(\omega) \in B \})
+    \end{gathered}
+  \end{equation*}
+  $P_X(B)$ is well defined because $X$ is measurable function satisfying
+  \begin{equation*}
+    X^{-1}(B) \in \mathcal{A} \Rightarrow B \in \mathcal{B}
+  \end{equation*}
+
+  Then eventually, we can define \textbfit{Probability Mass Function} $f_X$ as
+  \begin{equation*}
+    f_X(x) = \left\{
+    \begin{array}{ll}
+      1/2, & \quad x = 0, 1 \\
+      0 ,  & \quad \textrm{otherwise}
+    \end{array}
+    \right.
+  \end{equation*}
+\end{example}
+
+\begin{properties}
+  Naturally, all PMF's satisfy
+  \begin{enumerate}
+    \item $f_X(x) \geq 0 \quad \forall x \in \mathbb{R}$
+    \item $\sum_{x \in \mathbb{R}} f_X(x) = 1$
+    \item $P_X(X \in B) = \sum_{x \in B} f_X(x), \quad \forall B \in \mathcal{B}$ ($\sigma$ additivity)
+  \end{enumerate}
+\end{properties}
+
+\begin{example}
+  {\bf Coin tossing 3 times}\\
+  Consider the random experiment that toss a coin three times, then the sample
+  space $\Omega$ is consisted of the outcomes.
+  \begin{equation*}
+    \Omega = {\{ HHH, HHT, HTH, THH, HTT, THT, TTH, TTT \}}
+  \end{equation*}
+  Find the probability mass function $f_X$. \textbf{D.I.Y.}
+\end{example}
+
+\subsection{Continuous Random Variable and PDF}
+A random variable $X$ is said to be an absolutely continuous random variable iff
+there is a nonnegative Borel measurable function $f_X$, which is called
+\textbfit{probability density function} (PDF) of $X$, such that
+\begin{equation}
+  P_X(X \in B) = \int_{B} f_X d\mu \quad \textrm{where} \quad B \in \mathcal{B}
+\end{equation}
+where $\mu$ is a measure which is a function assigining non-negative numbers to
+measurable subset of $A$ in a way that is additive (i.e., $\mu(A_1 \dotcup A_2
+\dotcup \cdots) = \mu(A_1) + \mu(A_2) + \cdots$).
+
+\begin{properties}{ All PDF satisfies}
+  \begin{enumerate}
+    \item $f_X(x) \geq 0 \quad \forall x \in \mathbb{R}$
+    \item $\int_{\mathbb{R}} f_X(x) \mathrm{d}x = 1$
+    \item $P_X(X \in B) = \int_{x \in B} f_X(x) \mathrm{d}x, \quad \forall B \in \mathcal{B}$ ($\sigma$ additivity)
+  \end{enumerate}
+\end{properties}
+
+\begin{example}
+  Suppose a number is selected at random from $[0, 1]$ and let $X$ denote the
+  number obtained. Then the probability space is given by
+  \begin{equation*}
+    \begin{split}
+      \Omega &= \mathbb{R} \quad \textrm{(Real number)} \\
+      \mathcal{A} &= \mathcal{B} \quad \textrm{(borel $\sigma$ algebra)}
+    \end{split}
+  \end{equation*}
+  and
+  \begin{equation*}
+    \begin{array}{ll}
+      \forall B \in \mathcal{B}, &\quad P_X(X \in B) = P_X(X \in B \cap [0, 1]) \\
+      \forall k \in [0, 1],      &\quad P_X(X \in [0, k]) = k
+    \end{array}
+  \end{equation*}
+  Then by definition, we get the probability density function $f_X$ satisfying
+  \begin{equation*}
+    P_X(X \in B) = \int_{B \cap [0, 1]} f_X \; \mathrm{dx}
+  \end{equation*}
+  then,
+  \begin{equation*}
+    f_X = 1
+  \end{equation*}
+
+\end{example}
+
+\begin{example}
+  Is there any random variable that is neither discrete nor absolutely continuous? \\
+  Yes, Cantor function.
+\end{example}
+
+\subsection{Distribution Function, $F(\cdot)$}
+Of importance also is a different, but related, funciton, $F(x)$, defined as:
+\begin{equation}
+  F(x) = P(X \leq x)
+\end{equation}
+the probability that the random variable $X$ takes on values less than or equal
+to $x$. In general, we can use the equation for any arbitrary $b \geq a$,
+\begin{equation}
+  P(a \leq X \leq b) = F(b) - F(a)
+\end{equation}
+
+\begin{properties}{\bf All Distribution Function satisfies}
+  \begin{itemize}
+    \item $F_X$ is monotone increasing (not strictly increasing)
+    \item $F_X$ is right continuous
+    \item $\lim_{x \rightarrow \infty} F_X(x) = 1$
+    \item $\lim_{x \rightarrow -\infty} F_X(x) = 0$
+  \end{itemize}
+\end{properties}
+
+Note that the distribution function $F(x)$ is actually the more fundamental function
+for determining probabilities. This is because, regardless of whether $X$ is continuous
+or discrete, $F(\cdot)$ can be used to determine all desired probabilities.
+
+\begin{example}
+  For given probability distribution function $f_X(\cdot)$, find ditribution
+  function $F_X(\cdot)$
+  \begin{equation*}
+    f_X(x) = \left\{
+    \begin{array}{ll}
+      1, & \quad x \in [0, 1] \\
+      0, & \quad \textrm{otherwise}
+    \end{array}
+    \right.
+  \end{equation*}
+  \begin{enumerate}
+    \item $x < 0$;
+    \begin{equation*}
+      \begin{split}
+        F_X(x)
+        &= P(X \leq x) = \int_{-\infty}^{x} f_X(t) \mathrm{d}t \\
+        &= \int_{-\infty}^{x} 0 \mathrm{d}t = 0
+      \end{split}
+    \end{equation*}
+    \item $x \in [0, 1]$;
+    \begin{equation*}
+      \begin{split}
+        F_X(x)
+        &= P(X \leq x) = \int_{-\infty}^{x} f_X(t) \mathrm{d}t \\
+        &= 0 + \int_{0}^{x} f_X(t) \mathrm{d}t = \int_{0}^{x} 1 \mathrm{d}t \\
+        &= \left. t \right|_{0}^{x} = x
+      \end{split}
+    \end{equation*}
+    \item $x > 1$;
+    \begin{equation*}
+      \begin{split}
+        F_X(x)
+        &= P(X \leq x) = \int_{-\infty}^{x} f_X(t) \mathrm{d}t \\
+        &= 0 + \int_{0}^{1} f_X(t) \mathrm{d}t + \int_{1}^{x} 0 \mathrm{d}t \\
+        &= \left. t \right|_{0}^{1} + 0 \\
+        &= 1
+      \end{split}
+    \end{equation*}
+  \end{enumerate}
+  Then the distribution function $F(\cdot)$ is given by
+  \begin{equation*}
+    F_X(x) = \left\{
+    \begin{array}{ll}
+      0, & \quad x < 0 \\
+      x, & \quad x \in [0, 1] \\
+      1, & \quad x > 1
+    \end{array}
+    \right.
+  \end{equation*}
+\end{example}
+
+\subsection{Again, Classification of Random Variable}
+$X$ is discrete random variable iff $F_X$ is discrete. On the contrary, $X$ is
+continuous iff $F_X$ is continuous.
+
+
+\section{The Fundamental Tools}
+In summary, the PDF $f(\cdot)$ and the CDF $f(\cdot)$ indicate how the probabilities
+of events arising from the random phenomenon are distributed over the entire space
+of the associated random variable $X$. \\[0.5\baselineskip]
+That is, with the PDF $f(\cdot)$ and the CDF $f(\cdot)$ we can charaterize the
+``behavior'' of an assicated random variable, say $X$, of interest from the
+ensemble aggregate of all possible outcomes. Therefore, the PDF $f(\cdot)$ and
+the CDF $f(\cdot)$ is a description that can be used to analyze the particular
+random phenomenon. \\[0.5\baselineskip]
+However, it may be exhausting and burdensome to develop probabilistic model:
+\begin{enumerate}
+  \item clarify sample space and event space
+  \item assign probabilities to each outcomes with proper assumptions
+  \item set the random variable to map the exisitng probability space into new one
+  \item find probability distribution
+  \item evaluate probability distribution function and distribution function
+\end{enumerate}
+Fortunately, it turns out that specific (but most) random phenomenon can be
+generalized for some specific \textbfit{class of random phenomenon} charaterized
+with sound assumptions which is mathematically well-defined. Such functions provide
+convenient and compact mathematical representations of the desired ensemble behavior
+of random variables; they constitute the centerpiece of the probabilistic framework
+---the fundamental tool used for analyzing random phenomena~\cite{RP-Babatunde-2009}.
+
+\section{Mathematical Expectation}
+
+\subsection{Expected Value}
+\begin{definition}
+  Let $X$ be a random variable and $g$ be a function. Then, the expectation of
+  $g(x)$, denoted $E[g(x)]$, is defined by
+  \begin{equation}
+    E[g(x)] = \int_{\Omega} g(x)\, \mathrm{d}\mathbb{P} =
+    \left\{
+    \begin{array}{ll}
+      \sum_{x} g(x) f_X(x)                      & \quad \textrm{(discrete)} \\
+      \int_{\mathbb{R}} g(x) f_X(x) \mathrm{d}x & \quad \textrm{(continuous)}
+    \end{array}
+    \right.
+  \end{equation}
+  provided the integral exists.
+\end{definition}
+
+\begin{properties}{Expectation satisfies}
+  \begin{itemize}
+    \item $\mathbb{E}[a g_1(X) + b g_2(X) + c] = a\mathbb{E}[g_1(x)] + b\mathbb{E}[g_2(x)] + c$
+    \item If $g_1(x) \geq 0 \, \forall x$, then $\mathbb{E}[g_1(X)] \geq 0$.
+    \item If $g_1(x) \geq g_2(x) \, \forall x$, then $\mathbb{E}[g_1(X)] \geq \mathbb{E}[g_2(X)]$
+    \item If $a \leq g_1(x) \leq b \, \forall x$, then $a \leq \mathbb{E}[g_1(X)] \leq b$.
+  \end{itemize}
+\end{properties}
+
+\begin{definition}
+  Let $X$ be a random varialbe with finite expectation, then we define the mean
+  of $X$, denoted by $E[X]$, which is given by
+  \begin{equation}
+  \mathbb{E}[X] = \int_\Omega X \mathrm{d}\mathbb{P} =
+  \left\{
+  \begin{array}{ll}
+    \sum_{x} x f_X(x)                      & \quad \textrm{(discrete)} \\
+    \int_{\mathbb{R}} x f_X(x) \mathrm{d}x & \quad \textrm{(continuous)}
+  \end{array}
+  \right.
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  Let $X$ be a random variable with finite expectation, then we define the variance
+  of $X$, denoted by $Var(X)$, which is given by
+  \begin{equation}
+    {\sigma}^2 = Var [X] = \mathbb{E} [ { ( X - \mathbb{E} [X] ) }^2 ]
+  \end{equation}
+\end{definition}
+
+\begin{properties}{Variance satisfies}
+  \begin{itemize}
+    \item $V[aX+b] = a^2 Var[X]$
+    \item $Var(X) = \mathbb{E}[X^2] - \mu^2$
+  \end{itemize}
+\end{properties}
+
+\section{Random Variable Transformation}
+Many problems of practical interest involve a random variable $Y$ that is defined
+as a function of another random variable $X$, say according to $Y=\phi(X)$, so
+that the characteristics of the one arise directly from those of the other via
+the indicated transformation. In particular if we already know the probability
+distribution function for $X$ as $f_X(x)$, it will be helpful to know how to
+determine the corresponding distribution function for $Y$.
+\begin{example}
+  Suppose we know the distribution of a given $X$ and want to find the distribution
+  of $Y$ which is defined as a function of $X$.
+  \begin{equation*}
+    Y \coloneqq \phi(X) \quad \textrm{where} \quad \phi(X) = X^n
+  \end{equation*}
+
+  The probability space induced by $X$ is given by $(\mathbb{R}, \mathcal{B}, P_X)$
+  where $P_X \coloneqq \mathbb{P}({\{ \omega \in \Omega : X(\omega) \in B \}})$
+  for any $B \in \mathcal{B}$. And $X$ is uniformly distributed on $(0, 1)$ having
+  the probability distribution function $f_X(x)$ given by
+  \begin{equation}
+    f_X(x) =
+    \left\{
+    \begin{array}{ll}
+      1, \quad & 0 < x < 1, \\
+      0, \quad & otherwise.
+    \end{array}
+    \right.
+  \end{equation}
+  Find the distribution of $Y$.
+
+  \begin{sol}
+    At first, consider the mapping from primitive probability space $(\Omega, \mathcal{A}, \mathbb{P})$
+    into the new one induced by $Y$, which is the form of  $(\mathbb{R}, \mathcal{B}, P_Y)$,
+    where the probability distribution for any $B\in\mathcal{B}$ is defined as
+    \begin{equation*}
+      P_Y[Y \in B] \coloneqq \mathbb{P}[{\{ \omega \in \Omega : Y(\omega) \in B \}}].
+    \end{equation*}
+
+    Then, we want to find the distribution function $F_Y(y)$ given by
+    \begin{equation*}
+      F_Y(y) = P_Y(Y \leq y) = P_Y[Y \in (-\infty, y)]
+      = \mathbb{P}[{\{ \omega \in \Omega : Y(\omega) \in (-\infty, y) \}}]
+    \end{equation*}
+
+    But, we don't have any knoweledge about random variable $Y$ but only the
+    function $Y = \phi(X)$. Hence, we will substitute $X$ with $Y$ using the
+    function.
+    \begin{equation*}
+      \begin{split}
+        F_Y(y)
+        &= \mathbb{P}[{\{ \omega \in \Omega : Y(\omega)   \in  (-\infty, y) \}}] \\
+        &= \mathbb{P}[{\{ \omega \in \Omega : Y(\omega)   \leq y \}}] \\
+        &= \mathbb{P}[{\{ \omega \in \Omega : X^n(\omega) \leq y \}}] \\
+        &= \mathbb{P}[{\{ \omega \in \Omega : X(\omega)   \leq y^{1/n} \}}]
+      \end{split}
+    \end{equation*}
+    Note that, since the funciton $\phi^{-1}(Y) = Y^{1/n}$ is strictly increasing
+    function, the inequality sign is not change. Likewise, if the inverse function
+    has monotonous property, then we only need to maintain (for increasing) or
+    reverse (for decreasing) the sign of the inequality operator. In general, i.e.,
+    the inverse function has no such property, we need to determine the transformation
+    more precisely.
+    \\[0.5\baselineskip]
+    Now, we can use the definition of $P_X$ as follows
+    \begin{equation*}
+      \begin{split}
+        F_Y(y)
+        &= \mathbb{P}[{\{ \omega \in \Omega : X(\omega)   \leq y^{1/n} \}}] \\
+        &= P_X[X \leq y^{1/n}] \\
+        &= F_X(y^{1/n})
+      \end{split}
+    \end{equation*}
+
+    From the probability distribution function $f_X(x)$, we can evaluate the distribution
+    function $F_X(x)$, given by
+    \begin{equation*}
+      F_X(x) =
+      \left\{
+      \begin{array}{lr}
+        0, \quad & -\infty < x \leq 0, \\
+        x, \quad & 0 < x < 1, \\
+        1, \quad & x \geq 1.
+      \end{array}
+      \right.
+    \end{equation*}
+    Then the distribution function $F_Y(y)$ is given by
+    \begin{equation*}
+      F_Y(y) =
+      \left\{
+      \begin{array}{lr}
+        0,        \quad & -\infty < y \leq 0, \\
+        x^{1/n},  \quad & 0 < y < 1, \\
+        1,        \quad & y \geq 1.
+      \end{array}
+      \right.
+    \end{equation*}
+  \end{sol}
+  
+\end{example}
+
+\begin{example}
+  Suppose we know the distribution of a given $X$ and want to find the distribution
+  of $Y$ which is defined as a function of $X$.
+  \begin{equation*}
+    Y \coloneqq \phi(X) \quad \textrm{where} \quad \phi(X) = X^n
+  \end{equation*}
+
+  The probability space induced by $X$ is given by $(\mathbb{R}, \mathcal{B}, P_X)$
+  where $P_X \coloneqq \mathbb{P}({\{ \omega \in \Omega : X(\omega) \in B \}})$
+  for any $B \in \mathcal{B}$. And $X$ is uniformly distributed on $(0, 1)$ having
+  the probability distribution function $f_X(x)$ and distribution function $F_X(x)$,
+  which is given by
+  \begin{equation*}
+    f_X(x) = \left\{
+    \begin{array}{ll}
+      1, & \quad 0 < x < 1 \\
+      0, & otherwise
+    \end{array}
+    \right.
+  \end{equation*}
+  and
+  \begin{equation*}
+    F_X(x) = \int_{-\infty}^{x} f_X \mathrm{d}x
+  \end{equation*}
+
+  What is the distribution of $Y$? \textbf{D.I.Y.}
+\end{example}
+
+
+\section{Appendix}
+\subsection{Random Variable}
+\begin{definition}
+  A function $X: (\Omega, \mathcal{A}) \rightarrow (\mathbb{R}, \mathcal{B})$ is
+  called a random variable iff
+  \begin{equation}
+    \forall B \in \mathcal{B} \quad\textrm{s.t.}\quad X^{-1}(B) \in \mathcal{A}
+  \end{equation}
+  and the probability distribution on $(\mathbb{R}, \mathcal{B})$ can be defined as follows:
+  \begin{equation}
+    P_X(X \in B) \coloneqq \mathbb{P}(\{w \in \Omega : X(w) \in B\}) \quad \forall B \in \mathcal{B}
+  \end{equation}
+\end{definition}
+
+\textbf{Details.} \\
+Random variables can be defined in a more rigorous manner using the terminology
+of measure theory. Let $(\Omega, \mathcal{A}, \mathbb{P})$ be a probability space.
+Let $X$ be a function $X: \Omega \rightarrow \mathbb{R}$. Let $\mathcal{B}(\mathbb{R})$
+be the Borel $\sigma$-$algebra$ of $\mathbb{R}$ (i.e., the smallest $\sigma$-$algebra$
+containing all the open subsets of $\mathbb{R}$. If, for any $B \in \mathcal{B}(\mathbb{R})$,
+\begin{equation}
+  \{w \in \Omega : X(w) \in B\} \in \mathcal{A}
+\end{equation}
+then $X$ is a random variable on $\Omega$. As a consequence, if $X$ satisfies the
+above property, then for any $B \in \mathcal{B}(\mathbb{R})$, $P_X(X \in B)$ can
+be defined as follows:
+\begin{equation}
+  P_X(X \in B) \coloneqq \mathbb{P}(\{w \in \Omega : X(w) \in B\})
+\end{equation}
+where the probability on the right hand side is well-defined because the set
+$\{w \in \Omega : X(w) \in B\}$ is measurable by the very definition of random
+variable.
+
+
+\printbibliography
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}

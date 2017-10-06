@@ -1,0 +1,919 @@
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0 in}
+\setlength{\evensidemargin}{0 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,graphicx,mathtools}
+\usepackage[document]{ragged2e}
+\usepackage[Euler]{upgreek}
+\usepackage{amsthm}
+
+\usepackage[backend=biber]{biblatex}
+\addbibresource{ref.bib}
+
+\graphicspath{{./rsc/}{./rsc/pdf/}{./rsc/svg/}}
+
+% Define mathbfit
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+\DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{n}
+
+% Define operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\minimize}{Minimize}
+\DeclareMathOperator*{\maximize}{Maximize}
+
+\DeclareMathOperator*{\dotcup}{\dot{\cup}}
+
+% Define textbfit
+\makeatletter
+\DeclareRobustCommand\bfseriesitshape{
+  \not@math@alphabet\itshapebfseries\relax
+  \fontseries\bfdefault
+  \fontshape\itdefault
+  \selectfont
+}
+\makeatother
+\DeclareTextFontCommand{\textbfit}{\bfseriesitshape}
+
+\expandafter\def\expandafter\normalsize\expandafter{%
+    \normalsize
+    \setlength\abovedisplayskip{15pt}
+    \setlength\belowdisplayskip{15pt}
+    \setlength\abovedisplayshortskip{15pt}
+    \setlength\belowdisplayshortskip{15pt}
+}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% Narrower margin
+%
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+  \pagestyle{myheadings}
+  \thispagestyle{plain}
+  \newpage
+  \setcounter{lecnum}{#1}
+  \setcounter{page}{1}
+  \noindent
+  \begin{center}
+    \framebox{
+      \vbox{
+        \vspace{2mm}
+        \hbox to 6.28in { {\bf MAT2013: Probability and Statistics~\cite{IPSUR-2010}~\cite{RP-Babatunde-2009} \hfill Spring 2017} }
+        \vspace{4mm}
+        \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+        \vspace{2mm}
+        \hbox to 6.28in { {\it Lecturer: #3 \hfill Scribes: #4\/} }
+        \vspace{2mm}
+      }
+    }
+  \end{center}
+  \markboth{Lecture #1: #2}{Lecture #1: #2}
+  {\textbf{Scribes}}: {
+    Jisung Lim,
+    \textit{B.S. Candidate of Industrial Engineering
+    in Yonsei University, South Korea.}
+  }
+
+  {\textbf{Disclaimer}}: {
+    \textit{These notes have not been subjected to the
+    usual scrutiny reserved for formal publications.  They may be distributed
+    outside this class only with the permission of the Instructor.}
+  }
+  \vspace*{4mm}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+%\renewcommand{\cite}[1]{[#1]}
+% \def\beginrefs{\begin{list}%
+%         {[\arabic{equation}]}{\usecounter{equation}
+%          \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+%          \setlength{\labelwidth}{1.6truecm}}}
+% \def\endrefs{\end{list}}
+% \def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\AtEndEnvironment{definition}{\qed}%
+\newtheorem{theorem}{Theorem}[section]
+\AtEndEnvironment{theorem}{\qed}%
+\newtheorem{corollary}[theorem]{Corollary}
+\AtEndEnvironment{corollary}{\qed}%
+\newtheorem{lemma}[theorem]{Lemma}
+\AtEndEnvironment{lemma}{\qed}%
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+
+
+\theoremstyle{remark}
+\newtheorem{properties}[theorem]{Properties}
+%\newtheorem{example}[theorem]{Example}
+%\AtEndEnvironment{example}{\hfill\ensuremath{\Diamond}}%
+
+\theoremstyle{remark}
+\newtheorem{innerexample}[theorem]{Example}
+
+\makeatletter
+\patchcmd{\endinnerexample}{\endtrivlist}{\endlist}{}{}
+\newenvironment{example}
+ {\patchcmd{\@thm}{\trivlist}{\list{}{\leftmargin=3em \rightmargin=3em}}{}{}%
+  \vspace*{10\p@}
+  \innerexample\pushQED{\hfill\ensuremath{\Diamond}}}
+ {\popQED\endinnerexample}
+\makeatother
+
+
+\newenvironment{prf}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{sol}{{\bf Solution:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{skt}{{\bf Sketch:}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\newcommand\E{\mathbb{E}}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{4}{Multidimensional Random Variables}{Jae Guk, Kim}{Jisung Lim}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:x
+\justify
+\section{Notation}
+This note use some different notation than before. The brief changes are here.
+\begin{align*}
+  a            \quad & \textrm{A scalar} \\
+  \mathbfit{a} \quad & \textrm{A vector} \\
+  \mathrm{a}   \quad & \textrm{A scalar random variable} \\
+  \mathbf{a}   \quad & \textrm{A vector-valued random variable}
+\end{align*}
+
+\section{Introduction}
+We are going to investigate situations in which we deal simultaneously with
+several random variables on the same sample space. That is, for more than
+two variables, let's say two of $X$ and $Y$, we want to find the distribution
+of $P_{XY}[(X,Y) \in A]$ where $A \in \mathcal{B}_2$ (a $\sigma$-$algebra$
+consisting of sbusets of $\mathbb{R}^2$). We go through finite or countable
+random valued vector with an example.
+
+\begin{example}
+  {\bf Tossing a coin 2 times} \\
+  At first, let us consider the primitive probability space $(\Omega, \mathcal{A},
+  \mathbb{P})$. For each coin tossing, there are two disjoint outcomes H (for head),
+  and T (for tail), so that the sample space is given by $\Omega = {\{HH, HT, TH, TT\}}$
+  and the event space is given by $\mathcal{A} = 2^{\Omega}$ which is the $\sigma$-$algebra$
+  of $\Omega$. Also, the probability measure $\mathbb{P}$ is given as a equiprobable
+  model for each single outcomes, (i.e., $\mathbb{P}(HH) = \mathbb{P}(HT) = \mathbb{P}(TH)
+  = \mathbb{P}(TT) = 1/4$). \\[0.5\baselineskip]
+  Now let $X_1$ and $X_2$ be random variables that denote the number of heads
+  obtained in the first and second toss, respectively. Thus, $X(\omega) = (X_1(\omega), X_2(\omega))$,
+  and
+  \begin{equation*}
+    \begin{array}{rll}
+      &X(HH) = (1, 1),\, &X(HT) = (1, 0) \\
+      &X(TH) = (0, 1),\, &X(TT) = (0, 0).
+    \end{array}
+  \end{equation*}
+  By the vector valued random variable $X$, the existing probability space is
+  mapped to the new one $(\mathbb{R}^2, \mathcal{B}_2, P_X)$, where induced
+  distribution $P_X(X_1 = x_1, X_2 = x_2)$ is given by
+  \begin{equation*}
+    P_X(X_1 = x_1, X_2 = x_2) = \mathbb{P}[\{ \omega \in \Omega : X_1(\omega) = x_1, X_2(\omega) = x_2\}]
+  \end{equation*}
+  and the probability distribution function $f_X(x_1, x_2)$ is given by
+  \begin{equation*}
+    f_X(x_1, x_2) = \left\{
+    \begin{array}{ll}
+      1/4, \quad & x_1 = 1, x_2 = 1 \\
+      1/4, \quad & x_1 = 1, x_2 = 0 \\
+      1/4, \quad & x_1 = 0, x_2 = 1 \\
+      1/4, \quad & x_1 = 0, x_2 = 0 \\
+      0  , \quad & \textrm{otherwise.}
+    \end{array}
+    \right.
+  \end{equation*}
+  also we can see that $f_X$ satisfies
+  \begin{enumerate}
+    \item $f_X(x_1, x_2) \geq 0, \quad \forall (x_1, x_2) \in \mathbb{R}^2$
+    \item $\sum_{x \in \mathbb{R}^2} f_X(x) = 1$
+  \end{enumerate}
+\end{example}
+
+\subsection{Vector-valued Random Variable and Induced Distribution}
+In a more general sense, what we've seen in the example is to define \textit{random
+variable}, says $\mathbf{x}$, to \textit{map the primitive probability space} $(
+\Omega, \mathcal{A}, \mathbb{P})$ (which is tedious and inefficient to analyze
+mathematically) \textit{into the new one on $\mathbb{R}^n$} $(\mathbb{R}^n,
+\mathcal{B}_n, P_\mathbf{x})$ (which is appropriate to facilitate mathematical
+analysis). In that process, a new probability distribution is induced according
+to the random variable. \\[0.5\baselineskip]
+The whole things are achived via the vehicle of the random variable defined as
+follow:
+\begin{equation}
+  \mathbf{x} = \mathrm{(x_1, x_2, x_3, \ldots, x_n)}
+\end{equation}
+which maps the measurable space $(\Omega, \mathcal{A})$ into $(\mathbb{R}^n,
+\mathcal{B}_n)$. That is,
+\begin{equation}
+  \begin{split}
+    \mathbf{x}: (\Omega, \mathcal{A}) & \rightarrow (\mathbb{R}^n, \mathcal{B}_n) \\
+    \omega & \mapsto \mathbfit{x}
+  \end{split}
+\end{equation}
+where $\mathbfit{x} = (x_1, x_2, x_3, \ldots, x_n)$. And also $P_\mathbf{x}:\mathcal{B}_n
+\rightarrow \mathbb{R}$ is defined as follows
+\begin{equation}
+  \forall B \in \mathcal{B}_n,
+  \quad P_\mathbf{x}(\mathbf{x} \in B)
+  \coloneqq \mathbb{P}(\{\omega \in \Omega : \mathbf{x}(\omega) \in B\})
+\end{equation}
+wihch is called probability distribution of $\mathbf{x}$ on the sample space
+$\mathbb{R}^n$ with $\sigma$-$algebra$ $\mathcal{B}_n$.
+
+\subsection{Distribution Function and PDF}
+The story here goes the same as the case of 1-d random variable. Thus, we have
+a natural extension of distribution function of random variable for the vector-valued
+random variable:
+\begin{equation}
+  F_\mathbf{x}(\mathbfit{x})
+  = P_\mathbf{x}(\mathbf{x} \leq \mathbfit{x})
+  = P_\mathbf{x}(\mathrm{x}_1 \leq x_1, \mathrm{x}_2 \leq x_2, \ldots, \mathrm{x}_n \leq x_2)
+\end{equation}
+
+\subsubsection{Discrete Case}
+For discrete random vector, $F_\mathbf{x}(\mathbfit{x})$ is given by
+\begin{equation}
+  F_\mathbf{x}(\mathbfit{x})
+  = \sum_{\mathbf{x} \leq \mathbfit{x}} f_\mathbf{x}(\mathbfit{x})
+  = \sum_{\mathrm{x}_1 \leq x_1, \ldots, \mathrm{x}_n \leq x_n} f_\mathbf{x}(\mathbfit{x}).
+\end{equation}
+and the mass function $f_\mathbf{x}(\mathbfit{x})$ can be obtained by
+\begin{equation}
+  f_\mathbf{x}(\mathbfit{x})
+  = P_\mathbf{x}(\mathbf{x} = \mathbfit{x})
+  = P_\mathbf{x}(\mathrm{x}_1 = x_1, \mathrm{x}_2 = x_2, \ldots, \mathrm{x}_n = x_n)
+\end{equation}
+and satisfies
+\begin{enumerate}
+  \item $f_\mathbf{x}(\mathbfit{x}) \geq 0 \quad \forall \mathbfit{x} \in \mathbb{R}^n$
+  \item $\sum_{\mathbfit{x} \in \mathbb{R}^n} f_\mathbf{x}(\mathbfit{x}) = 1$
+\end{enumerate}
+
+\subsubsection{(Absolutely) Continuous Case}
+For continuous random vector, $F_\mathbf{x}(\mathbfit{x})$ is given by
+\begin{equation}
+  \forall B \in \mathcal{B}_n, \quad
+  F_\mathbf{x}(\mathbfit{x})
+  = \int_{\mathbb{R}^n} f_\mathbf{x}(\mathbfit{x}) \;\mathrm{d}\mathbfit{x}
+  = \int_{\mathbb{R}}\cdots\int_{\mathbb{R}} f_\mathbf{x}(x_1, x_2, x_3, \ldots, x_n) \;\mathrm{d}x_1 \cdots  \mathrm{d}x_n
+\end{equation}
+and the density $f_\mathbf{x}(\mathbfit{x})$ can be obtained by partial
+differentiation, given by
+\begin{equation}
+  f_\mathbf{x}(\mathbfit{x}) = \frac{\partial^n F_\mathbf{x}(\mathbfit{x})}{\partial x_1 \partial x_2 \cdots \partial x_n}
+\end{equation}
+and satisfies
+\begin{itemize}
+  \item $f_\mathbf{x}(\mathbfit{x}) \geq 0 \quad \forall \mathbfit{x} \in \mathbb{R}^n$
+  \item $\int_{\mathbb{R}^n} f_\mathbf{x}(\mathbfit{x}) \;\mathrm{d}\mathbfit{x} = 1$
+\end{itemize}
+
+\subsection{Marginal Distributions}
+Now, at this point, it is natural to ask if we get individual $P_{\mathrm{x}_i}$'s
+from the joint probability distribution $P_\mathbf{x}$. Let's consider the coin-tossing
+example to get an intuitive idea. (From this section, we only consider two random
+variable case for notational convenience)
+
+\begin{example}{\bf Tossing a coin 2 times} \\
+  Reconsider the example tossing coin twice. First, the sample space is given by
+  \begin{equation*}
+    \Omega = {\{ HH, HT, TH, TT \}}
+  \end{equation*}
+  and let $\mathrm{x}_1$ and $\mathrm{x}_2$ be random variables that denote the
+  number of heads obtained in the first and second toss, respectively. Thus,
+  $\mathbf{x}(\omega) = (\mathrm{x}_1(\omega), \mathrm{x}_2(\omega))$. Then, the
+  probability that the outcome of first coin has one head is
+  \begin{equation*}
+    \begin{split}
+      f_{\mathrm{x}_1}(1)
+      &= P_{\mathrm{x}_1}(\mathrm{x}_1 = 1) \\
+      &= \mathbb{P}[\{HH, HT\}] \\
+      &= \mathbb{P}[\{HH\} \cap \{HT\}] \\
+      &= \mathbb{P}[\{HH\}] + \mathbb{P}[\{HT\}] \\
+      &= P_{\mathbf{x}}(\mathrm{x}_1 = 1, \mathrm{x}_2 = 1)
+       + P_{\mathbf{x}}(\mathrm{x}_1 = 1, \mathrm{x}_2 = 0) \\
+      &= f_{\mathbf{x}}(1, 1)
+       + f_{\mathbf{x}}(1, 0)
+    \end{split}
+  \end{equation*}
+  So,
+  \begin{equation*}
+    \begin{split}
+      f_{\mathrm{x}_1}(1) & = \sum_{x_2} f_{\mathbf{x}}(1, x_2) = \frac{1}{2} \\
+      f_{\mathrm{x}_1}(0) & = \sum_{x_2} f_{\mathbf{x}}(0, x_2) = \frac{1}{2}
+    \end{split}
+  \end{equation*}
+\end{example}
+In conclusion, for a random vector $\mathbf{x} = (\mathrm{x}_1, \mathrm{x}_2)$,
+the probability distribution of $\mathrm{x}_1$ and $\mathrm{x}_2$ are
+\begin{equation}
+  \begin{split}
+    f_{\mathrm{x}_1}(x_1) & = \sum_{x_2} f_{\mathbf{x}}(x_1, x_2)\\
+    f_{\mathrm{x}_2}(x_2) & = \sum_{x_1} f_{\mathbf{x}}(x_1, x_2)
+  \end{split}
+\end{equation}
+and we call $f_{\mathrm{x}_1}(x_1)$ and $f_{\mathrm{x}_2}(x_2)$ marginal probability
+mass function of $\mathbf{x}$.\\[0.5\baselineskip]
+
+For the case of (absolutely) continuous random vector, $f_{\mathrm{x}_1}(x_1)$
+and $f_{\mathrm{x}_2}(x_2)$ is given by
+\begin{equation}
+  \begin{split}
+    f_{\mathrm{x}_1}(x_1) & = \int_{\mathbb{R}} f_{\mathbf{x}}(x_1, x_2) \;\mathrm{d}x_2\\
+    f_{\mathrm{x}_2}(x_2) & = \int_{\mathbb{R}} f_{\mathbf{x}}(x_1, x_2) \;\mathrm{d}x_1
+  \end{split}
+\end{equation}
+
+\section{Independent Random Variables}
+We discussed about the independence of multiple events before. In this chapter,
+since we've deal with more than two random variables simultaneously, we may inclined
+to discuss about the independence between multiple random variables. Let's see
+the coin-tossing example again.
+\begin{example}{\bf Tossing a coin 2 times} \\
+  Consider tossing a coin two times where the sample sapce is $\Omega = {\{ HH, HT,
+  TH, TT \}}$. Let $E_1$ and $E_2$ be events that head is obtained as an outcome of
+  the first and second toss, respectively. Then, $E_1$ and $E_2$ is given by
+  \begin{equation*}
+    E_1 = {\{ HH, HT \}} \quad \textrm{and} \quad E_2 = {\{ HH, TH \}}.
+  \end{equation*}
+  Since $\mathbb{P}(E_1 \cap E_2) = \mathbb{P}(\{ HH \}) = 1/4 = 1/2\cdot1/2 =
+  \mathbb{P}(E_1)\mathbb{P}(E_2)$, then the event $E_1$ and $E_2$ is independent.
+  To consider the case of tail occurred, let $E'_1 = \{ TT, TH \}$ and $E'_2 = \{
+  TT, HT \}$, then
+  \begin{equation*}
+    \begin{split}
+      \mathbb{P}(E_1 \cap E'_2) &= \mathbb{P}(E_1)P(E'_2) \\
+      \mathbb{P}(E'_1 \cap E_2) &= \mathbb{P}(E'_1)P(E_2) \\
+      \mathbb{P}(E'_1 \cap E'_2) &= \mathbb{P}(E'_1)P(E'_2)
+    \end{split}
+  \end{equation*}
+\end{example}
+At this point, someone may notice that each event is corresponding to the random
+variable $\mathrm{x}_1$ and $\mathrm{x}_2$, which was defined in \textit{Example 4.2.2}. i.e.,
+\begin{equation*}
+  \begin{split}
+    \{\omega \in \Omega : \omega \in \mathrm{x}_1^{-1}(1)\} &= E_1  \\
+    \{\omega \in \Omega : \omega \in \mathrm{x}_1^{-1}(0)\} &= E'_1 \\
+    \{\omega \in \Omega : \omega \in \mathrm{x}_2^{-1}(1)\} &= E_2  \\
+    \{\omega \in \Omega : \omega \in \mathrm{x}_2^{-1}(0)\} &= E'_2
+  \end{split}
+\end{equation*}
+We know that the outcome of first and second coin is independent, therefore
+intuitively we want to say that random variable $\mathrm{x}_1$ and $\mathrm{x}_2$
+are independent \textit{if and only if} for all events $E_1(x_1)$ and $E_2(x_2)$
+such that
+\begin{equation*}
+  \begin{split}
+    E_1(x_1) &= \{\omega \in \Omega : \omega \in \mathrm{x}_1^{-1}(x_1)\} \quad \forall x_1 \in \mathbb{R}\\
+    E_2(x_2) &= \{\omega \in \Omega : \omega \in \mathrm{x}_2^{-1}(x_2)\} \quad \forall x_2 \in \mathbb{R}
+  \end{split}
+\end{equation*}
+the following equality is satisfied
+\begin{equation*}
+  \mathbb{P}(E_1(x_1) \cap E_2(x_2)) = \mathbb{P}(E_1(x_1)) \mathbb{P}(E_2(x_2))
+\end{equation*}
+
+\begin{definition}
+  Random variables $\mathrm{x}_1, \ldots, \mathrm{x}_n$ defined on the same
+  probability space $(\Omega, \mathcal{A}, \mathbb{P})$ are said to be mutually
+  independent \textit{if and only if} for all $B_1, B_2, \ldots, B_n \in \mathcal{B}_n$,
+  \begin{equation}
+    P_\mathbf{x}(\mathrm{x}_1 \in B_1, \mathrm{x}_2 \in B_2, \ldots, \mathrm{x}_n \in B_n)
+    = P_{\mathrm{x}_1}(\mathrm{x}_1 \in B_1)
+      P_{\mathrm{x}_2}(\mathrm{x}_2 \in B_2) \cdots
+      P_{\mathrm{x}_n}(\mathrm{x}_n \in B_n)
+  \end{equation}
+\end{definition}
+
+\begin{theorem}
+  Suppose that $\mathrm{x}_1, \ldots, \mathrm{x}_n$ are random variables, all
+  defined on the same probability space $(\Omega, \mathcal{A}, \mathbb{P})$. Then
+  $\mathrm{x}_1, \ldots, \mathrm{x}_n$ are mutually independent \textit{if and only if}
+  \begin{equation}
+    \forall \mathbfit{x} = (x_1, x_2, \ldots, x_n) \in \mathbb{R}^n, \quad
+    F_\mathbf{x}(\mathbfit{x})
+    = F_{\mathrm{x}_1}(x_1)
+      F_{\mathrm{x}_2}(x_2) \cdots
+      F_{\mathrm{x}_n}(x_n)
+  \end{equation}
+\end{theorem}
+
+\begin{corollary}
+  Let $(\mathrm{x}, \mathrm{y})$ be a random vector with probability distribution
+  function $f_\mathrm{x}(x)$and $f_\mathrm{y}(y)$. Then, $\mathrm{x}$ and $\mathrm{y}$
+  are mutually independent (i.e., $F_{\mathrm{xy}}(x, y) = F_\mathrm{x}(x) F_\mathrm{y}(y)$),
+  \textit{if and only if}
+  \begin{equation}
+    \forall x, y \in \mathbb{R}, \quad f_{\mathrm{xy}}(x, y) = f_{\mathrm{x}}(x) f_\mathrm{y}(y)
+  \end{equation}
+\end{corollary}
+
+\begin{corollary}
+  Let $(\mathrm{x}, \mathrm{y})$ be an independent random variable, then
+  \begin{equation}
+    \mathbb{E}_\mathrm{xy}[g(\mathrm{x})h(\mathrm{y})]
+    = \mathbb{E}_\mathrm{x}[g(\mathrm{x})]
+      \mathbb{E}_\mathrm{y}[h(\mathrm{y})]
+  \end{equation}
+\end{corollary}
+
+\section{Distributional Characteristics}
+
+\subsection{Expectation}
+For random vector $\mathbf{x} = (\mathrm{x}_1, \ldots, \mathrm{x}_n)$, the
+expectation $\mathbb{E}_{\mathbf{x}}[\cdot]$ is defined by
+\begin{definition}
+  Let $\mathbf{x} = (\mathrm{x}_1, \ldots, \mathrm{x}_n)$ is a random vector
+  of which each component is defined on the same probability space $(\Omega, \mathcal{A},
+  \mathbb{P})$. Then the expectation of the function $g_\mathbf{x}(\mathbfit{x})$
+  is
+  \begin{equation}
+    \begin{split}
+      E[g_\mathbf{x}(\mathbfit{x})]
+      & \coloneqq \int_\Omega g_\mathbf{x}(\mathbf{x}(\omega)) \;\mathrm{d}\mathbb{P}(\omega) \\
+      & = \int_{\mathbb{R}^n} g_\mathbf{x}(\mathbfit{x}) \;\mathrm{d}P_{\mathbf{x}}(\mathbfit{x}) \\
+      & = \int_{\mathbb{R}^n} g_\mathbf{x}(\mathbfit{x}) f_\mathbf{x}(\mathbfit{x}) \;\mathrm{d}\mathbfit{x}
+    \end{split}
+  \end{equation}
+  and for discrete case
+  \begin{equation}
+    E[g_\mathbf{x}(\mathbfit{x})] = \sum_{\mathbfit{x} \in \mathbb{R}^n} g_\mathbf{x}(\mathbfit{x}) f_\mathbf{x}(\mathbfit{x})
+  \end{equation}
+\end{definition}
+
+\begin{theorem}
+  If $\mathrm{x}$ and $\mathrm{y}$ are independent, then
+  \begin{equation}
+    \begin{split}
+      \mathbb{E}[g(\mathrm{x})h(\mathrm{y})] = \mathbb{E}[g(\mathrm{x})]\mathbb{E}[h(\mathrm{y})]
+    \end{split}
+  \end{equation}
+\end{theorem}
+\begin{prf}
+  Use Fubini's theorem. \textbf{D.I.Y.}
+\end{prf}
+
+
+\subsection{Covariance}
+As we saw before, `independence' indicates that there is no probabilistic relationship
+between random variables. Then, naturally, we can be inclined to consider the case
+where there \textbf{is} a probabilistic realtionship. For our consideration, we
+investigate two aspects of the relationship: the type and the intensity. Let us
+consider the relationship between two random variables $\mathrm{x}: \textit{height}$
+and $\mathrm{y}: \textit{weight}$ of male students at Yonsei university.
+\\[0.5\baselineskip]
+Intuitively, the large values of $x$'s tends to be observed with large values of $y$'s
+and small values of $x$'s with smal values of $y$'s. i.e., if $x > \mu_\mathrm{x}$,
+then $y > \mu_\mathrm{y}$ is likely to be true and the product $(x-\mu_\mathrm{x})
+(y - \mu_\mathrm{y})$ will be positive, and if $x < \mu_\mathrm{x}$, then
+$y < \mu_\mathrm{y}$ is likely to be true and the product $(x-\mu_\mathrm{x})
+(y - \mu_\mathrm{y})$ will also be positive.
+\\[0.5\baselineskip]
+Thus, the sign of $(x-\mu_\mathrm{x})(y - \mu_\mathrm{y})$ gives us information
+regarding the type of relationship between $X$ and $Y$. Hence, the covariance
+$Cov[\mathrm{x}, \mathrm{y}] = \mathbb{E}[(\mathrm{x} - \mu_\mathrm{x})(\mathrm{y} - \mu_\mathrm{y})]$
+indicates the tendency; the type of the relationship.
+\begin{definition}
+  Covariance between two random variable $\mathrm{x}$ and $\mathrm{y}$ is given by
+  \begin{equation}
+    Cov[\mathrm{x}, \mathrm{y}] = \mathbb{E}[(\mathrm{x} - \mu_\mathrm{x})(\mathrm{y} - \mu_\mathrm{y})]
+  \end{equation}
+\end{definition}
+Now we need to consider the other tendency, called intensity, which decides how
+strong or weak is the relationship. Although the covariance provides an information
+about what the type of the relationship is, it can not give us any consistent
+information about the intensity. Hence, we need to normalize the quantitiy with
+standard deviation of each random variables $\sigma_{\mathrm{x}}$ and $\sigma_{\mathrm{y}}$,
+respectively. Therefore, the correlation $\rho_{\mathrm{xy}} = Cov(\mathrm{x},\mathrm{y})/\sigma_{\mathrm{x}}\sigma_{\mathrm{y}}$
+indicates the tendency; the intensity of the relationship.
+\begin{definition}
+  Correlation between two random variable $\mathrm{x}$ and $\mathrm{y}$ is given by
+  \begin{equation}
+    \rho_{\mathrm{xy}} = \frac{Cov(\mathrm{x},\mathrm{y})}{\sigma_{\mathrm{x}}\sigma_{\mathrm{y}}}
+  \end{equation}
+\end{definition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% TODO %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Conditioning}
+\textbf{This chapter is not yet completed.}
+\begin{itemize}
+  \item Formal definition of conditional expectation~\cite{ONLINE-2}
+  \item Sigma algebra generated from random variable~\cite{ONLINE-3}
+\end{itemize}
+
+We once discussed about the conditional probability between events, let's say two
+$A$ and $B$, in the same probability space $(\mathbb{R}, \mathcal{B}, P_X)$, let's
+say induced by $X$, which has the form of
+\begin{equation*}
+  P_X[A | B] = \frac{P_X[A \cap B]}{P_X[A]}
+\end{equation*}
+and this is also valid in the `primitive' probablity space $(\Omega, \mathcal{A}, \mathbb{P})$,
+\begin{equation*}
+  \mathbb{P}[A | B] = \frac{\mathbb{P}[A \cap B]}{\mathbb{P}[A]}.
+\end{equation*}
+
+Sometimes, there may exist a strong need to conditioning some random variables upon
+other variables. Now to develop an idea for the conditioning, let us first see
+the coin-tossing example to illustrate the process to evaluate some function under
+some conditions using conditional probability. \\
+
+\begin{example}{\bf Add up the coins with head}\\
+  Consider you tossed three coins 10, 50, and 100 won. Then, the sample space is
+  \begin{equation*}
+    \Omega = {\{HHH, HHT, HTH, THH, HTT, THT, TTH, TTT\}}.
+  \end{equation*}
+  Define $X$ by $X(\omega)$: The sum of the (monetary) values of those coins that
+  land with heads up. What is the expected value of $X$ given that two coins have
+  landed with heads up? \\[0.5\baselineskip]
+  \begin{sol}
+    The given condition can be denoted by a subset $B \subset \Omega$ such that
+    \begin{equation*}
+      B = {\{HHT, HTH, THH\}}
+    \end{equation*}
+    then, we can define the conditional expectation of $X$ given $B$ as follows
+    \begin{equation*}
+      \begin{split}
+        \mathbb{E}_X[X|B]
+        &\coloneqq \sum_{\omega_0 \in B} X(\{\omega_0\}) \mathbb{P}[ \{X = X(\{\omega_0\})\} | B ] \\
+        &= \sum_{\omega_0 \in B} X(\{\omega_0\}) \frac{\mathbb{P}[ \{X = X(\{\omega_0\})\} \cap B ]}{\mathbb{P}[B]} \\
+        &= \frac{1}{{\mathbb{P}[B]}} \sum_{\omega_0 \in B} X(\{\omega_0\}) \mathbb{P}[\{\omega_0\}] \\
+        &= \frac{1}{{\mathbb{P}[B]}} \sum_{\omega_0 \in B} X(\{\omega_0\}) P_X(X=X(\{\omega_0\})) \\
+        &= \frac{1}{{\mathbb{P}[B]}} \sum_{x \in X({\omega_0})} x P_X(X=x)
+      \end{split}
+    \end{equation*}
+    or, for (absolutely) continuous random variable,
+    \begin{equation*}
+      \mathbb{E}_X[X|B]
+      = \frac{1}{{\mathbb{P}[B]}} \int_{X({\omega_0})} x P_X(X=x) \;\mathrm{d}x
+    \end{equation*}
+  \end{sol}
+\end{example}
+In this example, we used the given information to find the events of interest $B
+\subset \Omega$ and then we only considered those events to evalute the function
+(i.e., $\mathbb{E}_X[X|B]$). Note that the evaluated function is conditioned by
+a subset of $\Omega$, not another random variable. Hence, now we develop this
+concept into the one for random variable.
+
+\begin{example}{\bf (Continued from 4.5.1)} \\
+  Let $Y$ be a random variable defined by
+  \begin{equation*}
+    Y(\omega): \textrm{the sum of the values of 10 and 50 when they show heads},
+  \end{equation*}
+  then we can find associated event
+  \begin{equation*}
+    Y(\omega) = \left\{
+    \begin{array}{ll}
+      0,  \quad & \omega \in \{TTH, TTT\} \\
+      10, \quad & \omega \in \{HTH, HTT\} \\
+      50, \quad & \omega \in \{THH, THT\} \\
+      60, \quad & \omega \in \{HHH, HHT\}
+    \end{array}
+    \right.
+  \end{equation*}
+  and a collection of the events assiciated with $Y$ is given by
+  \begin{equation*}
+    \mathbb{C} = \{\{TTH, TTT\}, \{HTH, HTT\}, \{THH, THT\}, \{HHH, HHT\}\}.
+  \end{equation*}
+  Note that the collection of the events is the subset of $\sigma$-$algebra$ of
+  primitive sample space $\Omega$. Now, we can evaluate each expectation values
+  of $X$ given those events, respectively.
+  \begin{equation*}
+    \begin{split}
+      \mathbb{E}[X | {\{Y =  0\}}] &= a \\
+      \mathbb{E}[X | {\{Y = 10\}}] &= b \\
+      \mathbb{E}[X | {\{Y = 50\}}] &= c \\
+      \mathbb{E}[X | {\{Y = 60\}}] &= d
+    \end{split}
+  \end{equation*}
+
+  From this results, we are inclined to sum up those four results to construct
+  a new function as follows
+  \begin{equation*}
+    \mathbb{E}[X | Y] (\omega) = \left\{
+    \begin{array}{ll}
+      a \quad & Y(\omega) =  0 \\
+      b \quad & Y(\omega) = 10 \\
+      c \quad & Y(\omega) = 50 \\
+      d \quad & Y(\omega) = 60
+    \end{array}
+    \right.
+  \end{equation*}
+  which is called conditional expectation of $X$ given $Y$.~\cite{ONLINE-2}
+\end{example}
+As we can see, the conditional expectation of $X$ given $Y$ is the function
+$\mathbb{E}[X|Y]: \mathbb{C} \rightarrow \mathbb{R}$ where $\mathbb{C}$ is the
+subset of $\sigma$-$algebra$ of $\Omega$. Hence, we can see this set function a
+random variable. Furthermore, we can always find a function, says $\phi(\cdot)$,
+which coposite with function $Y$ so that it can represent the function $\mathbb{E}[X|Y]$,
+i.e.,
+\begin{equation}
+  \exists \phi \quad \textrm{s.t.} \quad \mathbb{E}[X | Y](\omega) = (\phi \circ Y)(\omega) = \phi(Y(\omega))
+\end{equation}
+Hence, the conditional expectation of $X$ given $Y$ is the form of
+\begin{equation}
+  \mathbb{E}[X | Y = y] \coloneqq \phi(y)
+\end{equation}
+
+Generally, it is too difficult to find the function $\phi$, but only in some
+specific cases we can find $\phi$ easily. For discrete random variable $X$ and $Y$,
+\begin{equation}
+  \mathbb{E}[X | Y = y] \coloneqq \phi(y) = \sum_{x} x f_{X|Y} (x|y)
+\end{equation}
+and for (absolutely) continuous random variable $X$ and $Y$,
+\begin{equation}
+  \mathbb{E}[X | Y = y] \coloneqq \phi(y) = \int_{\mathbb{R}} x f_{X|Y} (x|y) \;dx
+\end{equation}
+where
+\begin{equation}
+  f_{X|Y} (x|y) = \left\{
+  \begin{array}{ll}
+    \frac{f_Y(x,y)}{f_Y(y)}, \quad & f_Y(y) > 0 \\
+    0,                       \quad & \textrm{otherwise}
+  \end{array}
+  \right.
+\end{equation}
+
+For example, let $B$ be a subset of $\Omega$ and let $\mathbf{1}_B: \Omega \rightarrow \mathbb{R}$
+with support $\{0, 1\}$ be the random variable given by
+\begin{equation}
+  \mathbf{1}_B = \left\{
+  \begin{array}{ll}
+    1, \quad & \omega \in B \\
+    0, \quad & \omega \notin B
+  \end{array}
+  \right.
+\end{equation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% TODO %%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\section{Random Variable Transformation}
+We discussed about the distributional approach to the transformation of random
+variables. Now, we shall discuss the calculus-based approach. First, we will deal
+with an univariate transformation and then extend the concept to a multivariate
+transformation.
+
+\subsection{Univariate Transformation}
+First of all, recall the basic calculus ``Integration of Substitution'',
+given by
+\begin{equation}
+  \int_{\phi(a)}^{\phi(b)} f(x) \; dx
+  = \int_{a}^{b} f(\phi(t)) \,|\phi^i(t)| \;dt
+\end{equation}
+where $\phi(t): [a,b] \rightarrow 1$. This formula is used to transform one
+integral into another integral. Therefore, from this formula, we can find the
+continuous probability distribution $P[Y \in A]$ of which integrand is a density:
+\begin{equation}
+  P[Y \in A] = \int_{\phi^{-1}(A)} f_X(x) \;dx
+  = \int_A f_Y(\phi^{-1}(y))\,|(\phi^{-1})' (y)| \;dy
+\end{equation}
+
+\subsection{Multivariate Transformation}
+Let us begin the discussion about the case of multivariate transformation in
+some rigorous sense.
+
+Let $G$ be an open set in $\mathbb{R}^n$ and let $\phi:G \rightarrow \mathbb{R}^n$
+be continuously differentiable. Suppose $\phi$ is injective on $G$ and its
+Jacobian never vanishes then
+
+\begin{equation}
+  \int_{\phi(G)} f(y) \;dy = \int_{G} f(\phi(x)) \, ||J_{\phi}(x)||\;dx
+\end{equation}
+where
+\begin{equation}
+  J_\phi (x) =
+    \begin{bmatrix}
+      \frac{\partial \phi_1}{\partial x_1} & \cdots & \frac{\partial \phi_1}{\partial x_n} \\
+      \vdots & \ddots & \vdots \\
+      \frac{\partial \phi_n}{\partial x_1} & \cdots & \frac{\partial \phi_n}{\partial x_n}
+    \end{bmatrix}
+    .
+\end{equation}
+
+\subsection{Bivariate transformation}
+A specific example is given by the $\mathbb{R}^2 \rightarrow \mathbb{R}^2$ transformation,
+which is called bivariate transformation.
+
+Let $X$ be a random vector and $\phi$ be a transformation from $\mathbb{R}^n \rightarrow \mathbb{R}^n$
+we want to find the distribution of $Y=\phi(X)$. Suppose $\phi$ is good enough
+to satisfy any regularity needed to apply the theorem.
+Note that, from a random vector $Y = (Y_1, Y_2)$, given by
+\begin{equation}
+  \begin{split}
+    Y_1 &= \phi_1(X_1, X_2) \\
+    Y_2 &= \phi_2(X_1, X_2),
+  \end{split}
+\end{equation}
+we can find $\phi^{-1}$ such that
+\begin{equation}
+  \begin{split}
+    X_1 &= \phi^{-1}_1 (Y_1, Y_2) \\
+    X_2 &= \phi^{-1}_2 (Y_1, Y_2).
+  \end{split}
+\end{equation}
+Then, by the Change of Variables
+\begin{equation}
+  \begin{split}
+    P[Y \in A]
+    &= \iint_{\phi^{-1}(A)} f_X(x_1, x_2) \; dx_1 dx_2 \\
+    &= \iint_{A} f_Y(\phi^{-1}(y_1, y_2)) \, ||J|| \; dy_1 dy_2
+  \end{split}
+\end{equation}
+where
+\begin{equation}
+  J(x) =
+    \begin{bmatrix}
+      \frac{\partial x_1}{\partial y_1} & \frac{\partial x_1}{\partial y_2} \\
+      \frac{\partial x_2}{\partial y_1} & \frac{\partial x_2}{\partial y_2}
+    \end{bmatrix}
+\end{equation}
+
+From this specific example, we can understand the following theorem of
+$\mathbb{R}^n \rightarrow \mathbb{R}^n$ generalization.
+\begin{theorem}
+  Let $X = (x_1, x_2, \ldots, x_n)$ have joint distributions $f$. Let $\phi:
+  \mathbb{R}^n \rightarrow \mathbb{R}^n$ be continuously differentiable and
+  intjective with non-vaninsh Jacobian. Then $Y = \phi(x)$ has density:
+  \begin{equation}
+    f_Y(y) = \left\{
+      \begin{array}{ll}
+        f_X(\phi^{-1}(y)) \, ||(J_{\phi^{-1}}(y))||, &\quad y \in \phi(\mathbb{R}^n) \\
+        0                                            &\quad \textrm{otherwise}
+      \end{array}
+      \right.
+  \end{equation}
+\end{theorem}
+
+\begin{example}
+  Let $X$ and $Y$ be i.i.d. normal R.V's with $\mu=0$ and $\sigma^2 = 1$.
+  What is the joint distribution of $(U,V) = (X+Y, X-Y)$?\\
+  \begin{skt}
+    \begin{enumerate}
+      \item Define $\phi:(U, V) \rightarrow (X, Y)$ and find $\phi^{-1}$
+      \item Evaluate Jacobian $J_{\phi^{-1}}(U, V)$ and it's determinant $||J||$
+      \item Use the theorem to find $f_{(U,V)} (u, v)$.
+    \end{enumerate}
+  \end{skt}
+  \begin{sol}
+    $\frac{1}{\sqrt{4\pi}} \exp{\{-u^2/4\}} \frac{1}{\sqrt{4\pi}} \exp{\{-v^2/4\}}$
+  \end{sol}
+\end{example}
+
+\section{Moment Generating Function}
+\begin{definition}
+  Let $X$ be a random variable, then
+  \begin{equation}
+    M_X(t) = \left\{
+    \begin{array}{ll}
+      \sum_i e^{tx_i} f(x_i)                    \quad & \textrm{$x$: distrete}\\[1em]
+      \int_{-\infty}^{\infty} e^{tx} f(x) \; dx  \quad & \textrm{$x$: continuous}
+    \end{array}
+    \right.
+  \end{equation}
+  when it exists and call it the \textit{moment generating function} as a
+  function fo $t$.
+\end{definition}
+By the definition of mathematical expectation $\mathbb{E}[\cdot]$, MGF can be
+denoted by
+\begin{equation}
+ M_X(t) = \mathbb{E}_X[e^{tX}]
+\end{equation}
+and by differentiating the function with respect to $t$, we obtain,
+\begin{equation}
+  \begin{split}
+    M_X'(t)
+    &= \frac{d}{dt} \mathbb{E}[e^{tX}]   \\
+    &= \frac{d}{dt} \int_{-\infty}^{\infty} e^{tx} f(x) \; dx \\
+    &= \int_{-\infty}^{\infty} \frac{d}{dt} e^{tx} f(x) \; dx \quad \textrm{(Not always commutable)}\\
+    &= \mathbb{E}[\frac{d}{dt} (e^{tX})] \\
+    &= \mathbb{E}[X e^{tX}]
+  \end{split}
+\end{equation}
+and let take $t = 0$ then,
+\begin{equation}
+  M_X'(0) = \mathbb{E}[X]
+\end{equation}
+which is called the first moment. Similarly, the second derivative is given by
+\begin{equation}
+  \begin{split}
+    M_X''(t)
+    &= \frac{d}{dt} M_X'(t) \\
+    &= \frac{d}{dt} \mathbb{E}[X e^{tX}] \\
+    &= \frac{d}{dt} \int_{-\infty}^{\infty} xe^{tx} f(x) \; dx \\
+    &= \int_{-\infty}^{\infty} \frac{d}{dt} xe^{tx} f(x) \; dx \quad \textrm{(Not always commutable)}\\
+    &= \mathbb{E}[\frac{d}{dt} (Xe^{tX})] \\
+    &= \mathbb{E}[X^2e^{tX}]
+  \end{split}
+\end{equation}
+and when $t=0$, the second moment is obtained as follows
+\begin{equation}
+  M_X''(0) = \mathbb{E}[X^2]
+\end{equation}
+In general, the $k$th derivative is given by
+\begin{equation}
+  M_X^{(k)}(t) = \mathbb{E}[X^k{e^{tX}}]
+\end{equation}
+and take $t=0$, then
+\begin{equation}
+  M_X^{(k)}(0) = \mathbb{E}[X^k]
+\end{equation}
+which is called the $k$-th moment of random variable $X$.
+\begin{example}
+  Let $X$ be a random variable, the PDF of which is given by
+  \begin{equation*}
+    f_X(x) = \frac{1}{\Gamma(\alpha)\beta^{\alpha}} x^{\alpha-1}e^{-x/\beta}
+    \quad \textrm{where} \quad 0 < x < \infty,\, \alpha>0,\, \beta>0
+  \end{equation*}
+  Find MGF of $X$. \\
+  \begin{sol}
+    \begin{equation*}
+      \begin{split}
+        M_X(t)
+        &= \int_{-\infty}^{\infty} e^{tx} f_X(t) \;dx \\
+        &= \int_{-\infty}^{\infty} e^{tx} \frac{1}{\Gamma(\alpha)\beta^{\alpha}} x^{\alpha-1}e^{-x/\beta} \;dx \\
+        &= \int_{-\infty}^{\infty} e^{tx} \frac{1}{\Gamma(\alpha)\beta^{\alpha}} x^{\alpha-1}e^{-x/\beta} \;dx \\
+        &= \frac{1}{\Gamma(\alpha)\beta^{\alpha}} \int_{-\infty}^{\infty} e^{tx} x^{\alpha-1}e^{-x/\beta} \;dx \\
+        &= \frac{{(\beta/(1-t\beta))}^\alpha}{{(\beta/(1-t\beta))}^\alpha} \frac{1}{\Gamma(\alpha)\beta^{\alpha}} \int_{-\infty}^{\infty} e^{-x(1-t\beta)/\beta} x^{\alpha-1} \;dx \\
+        &= \frac{{(\beta/(1-t\beta))}^\alpha}{\beta^\alpha} \\
+        &= {\left\{\frac{1}{1-t\beta}\right\}}^\alpha
+      \end{split}
+    \end{equation*}
+  \end{sol}
+
+\end{example}
+
+\begin{properties}{\it MFG has following properties:}\\
+  \begin{itemize}
+    \item {\bf Uniqueness:}\\
+          If two random variables have the same MGF, than they have the same distribution.
+    \item {\bf Linear Transformation:}\\
+          If $Y = aX + b$, then
+          $$
+          M_Y(t) = e^{bt}M_X(at).
+          $$
+    \item {\bf Independent sums:}\\
+          For independent random variable, says $X$ and $Y$, with $M_X(t), M_Y(t)$,
+          respectively, the MGF of $Z = X + Y$ is given by
+          $$
+          M_Z(t) = M_{X+Y}(t) = M_X(t)M_Y(t) = \iint e^{t(x+y)}f_X(x)f_Y(y) \;dxdy.
+          $$
+  \end{itemize}
+\end{properties}
+\printbibliography
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}

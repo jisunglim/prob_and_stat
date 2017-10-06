@@ -1,0 +1,540 @@
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0 in}
+\setlength{\evensidemargin}{0 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,graphicx,mathtools}
+\usepackage[document]{ragged2e}
+\usepackage[Euler]{upgreek}
+\usepackage{amsthm}
+\usepackage{mdframed}
+
+\usepackage[backend=biber]{biblatex}
+\addbibresource{ref.bib}
+
+\graphicspath{{./rsc/}{./rsc/pdf/}{./rsc/svg/}}
+
+\expandafter\def\expandafter\normalsize\expandafter{%
+    \normalsize
+    \setlength\abovedisplayskip{15pt}
+    \setlength\belowdisplayskip{15pt}
+    \setlength\abovedisplayshortskip{15pt}
+    \setlength\belowdisplayshortskip{15pt}
+}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% Narrower margin
+%
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+  \pagestyle{myheadings}
+  \thispagestyle{plain}
+  \newpage
+  \setcounter{lecnum}{#1}
+  \setcounter{page}{1}
+  \noindent
+  \begin{center}
+    \framebox{
+      \vbox{
+        \vspace{2mm}
+        \hbox to 6.28in { {\bf MAT2013: Probability and Statistics~\cite{IPSUR-2010}~\cite{RP-Babatunde-2009} \hfill Spring 2017} }
+        \vspace{4mm}
+        \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+        \vspace{2mm}
+        \hbox to 6.28in { {\it Lecturer: #3 \hfill Scribes: #4\/} }
+        \vspace{2mm}
+      }
+    }
+  \end{center}
+  \markboth{Lecture #1: #2}{Lecture #1: #2}
+  {\textbf{Scribes}}: {
+    Jisung Lim,
+    \textit{B.S. Candidate of Industrial Engineering
+    in Yonsei University, South Korea.}
+  }
+
+  {\textbf{Disclaimer}}: {
+    \textit{These notes have not been subjected to the
+    usual scrutiny reserved for formal publications.  They may be distributed
+    outside this class only with the permission of the Instructor.}
+  }
+  \vspace*{4mm}
+}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+
+%%%% Box
+\newmdenv[leftline=false,rightline=false]{tb}
+\newenvironment{hlbox}
+{
+  \vspace*{5mm}
+  \begin{tb}
+}
+{
+  \end{tb}
+  \vspace*{1mm}
+}
+
+% Use these for theorems, lemmas, proofs, etc.
+\theoremstyle{definition}
+
+% Definition
+\newtheorem{definition}{Definition}[section]
+\AtEndEnvironment{definition}{\qed}%
+
+\newenvironment{bdef}
+{\vspace*{5mm}\begin{tb}\begin{definition}}
+{\end{definition}\end{tb}\vspace*{2mm}}
+
+% Theorem
+\newtheorem{theorem}{Theorem}[section]
+\AtEndEnvironment{theorem}{\qed}%
+
+\newenvironment{bthrm}
+{\vspace*{5mm}\begin{tb}\begin{theorem}}
+{\end{theorem}\end{tb}\vspace*{2mm}}
+
+% Corollary
+\newtheorem{corollary}[theorem]{Corollary}
+\AtEndEnvironment{corollary}{\qed}%
+
+\newenvironment{bcrly}
+{\vspace*{5mm}\begin{tb}\begin{corollary}}
+{\end{corollary}\end{tb}\vspace*{2mm}}
+
+% Lemma
+\newtheorem{lemma}[theorem]{Lemma}
+\AtEndEnvironment{lemma}{\qed}%
+
+\newenvironment{blma}
+{\vspace*{5mm}\begin{tb}\begin{lemma}}
+{\end{lemma}\end{tb}\vspace*{2mm}}
+
+% Proposition
+\newtheorem{proposition}[theorem]{Proposition}
+\AtEndEnvironment{proposition}{\qed}%
+
+\newenvironment{bprpn}
+{\vspace*{5mm}\begin{tb}\begin{proposition}}
+{\end{proposition}\end{tb}\vspace*{2mm}}
+
+% Claim
+\newtheorem{claim}[theorem]{Claim}
+\AtEndEnvironment{claim}{\qed}%
+
+\theoremstyle{remark}
+\newtheorem{properties}[theorem]{Properties}
+
+%%%% Define example tools
+\theoremstyle{remark}
+\newtheorem{innerexample}[theorem]{Example}
+\makeatletter
+\patchcmd{\endinnerexample}{\endtrivlist}{\endlist}{}{}
+\newenvironment{example}
+ {\patchcmd{\@thm}{\trivlist}{\list{}{\leftmargin=3em \rightmargin=3em}}{}{}%
+  \vspace*{10\p@}
+  \innerexample\pushQED{\hfill\ensuremath{\Diamond}}}
+ {\popQED\endinnerexample}
+\makeatother
+
+\newenvironment{exskt}
+{\begin{list}{}{\leftmargin=3em \rightmargin=3em}\item{\bf Sketch.}}
+{\hfill\ensuremath{\qed}\vspace*{5mm}\end{list}}
+
+\newenvironment{exprf}
+{\begin{list}{}{\leftmargin=3em \rightmargin=3em}\item{\bf Proof.}}
+{\hfill\ensuremath{\qed}\vspace*{5mm}\end{list}}
+
+\newenvironment{exsol}
+{\begin{list}{}{\leftmargin=3em \rightmargin=3em}\item{\bf Solution.}}
+{\hfill\ensuremath{\qed}\vspace*{5mm}\end{list}}
+
+%%%% Define solving tools
+\newenvironment{skt}{{\bf Sketch:}}{}
+\newenvironment{prf}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{sol}{{\bf Solution:}}{\hfill\rule{2mm}{2mm}}
+
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+% Define operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\minimize}{Minimize}
+\DeclareMathOperator*{\maximize}{Maximize}
+
+\DeclareMathOperator*{\dotcup}{\dot{\cup}}
+
+% Define Logical operators
+\providecommand{\land}{\wedge}
+\providecommand{\lior}{\vee}
+\providecommand{\lxor}{\veebar}
+\providecommand{\limpl}{\rightarrow}
+\providecommand{\lImpl}{\Rightarrow}
+\providecommand{\liff}{\leftrightarrow}
+\providecommand{\lIff}{\Leftrightarrow}
+
+% Define mathbb
+\newcommand\E{\mathbb{E}}
+
+% Define mathbfit
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+\DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{n}
+
+% Define textbfit
+\makeatletter\DeclareRobustCommand\bfseriesitshape{\not@math@alphabet\itshapebfseries\relax\fontseries\bfdefault\fontshape\itdefault\selectfont}\makeatother\DeclareTextFontCommand{\textbfit}{\bfseriesitshape}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{7}{Statistics: Sampling}{Jae Guk, Kim}{Jisung Lim}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+
+
+% **** YOUR NOTES GO HERE:x
+\justify
+\textbfit{Chapter Objectives:} How one characterizes the variability inherent
+\textbf{in samples}, $\{x_i\}_{i=1}^{n}$, as distinct from, but obviously
+related to, characterizing the variability inherent \textbf{in individual
+observations of a random variable}, $X$.
+
+Inferential statistics is primarily concerned with drawing inference about a
+population from sample information. We therefore must begin with
+\textbf{sampling}---a formal study of samples from a population.
+But a sample is a finite collection of individual observations being itself
+susceptible to random variation (i.e., different samples from the same
+population under indentical conditions will be differ).
+Therefore, for samples to be useful for statistical inference (concerning the
+populations that produced them), the variability inherent in them must be
+characterized mathematically.
+
+\section{Introductory Concept}
+We've seen that the role of the sample space $V_X$ of $X$ in the probability
+theory is analogous to that of the population in statistics. this sense of
+analogy can be extended to the relationship between \textit{individual
+observation} $x$ from \textit{the sample space} $V_X$ and finite-sized
+\textit{sample} from \textit{the population}.
+In the probability theory, the variability inherent to individual observations
+$x$ of $X$ from the $V_X$ is characterized by the pdf $f(x)$. It is then used
+to carry out theoretical probabilistic analysis for the elements of $V_X$.
+
+\textbf{There is analogous problem in statistics:} in order to characterize
+the population appropriately, we must first figure out ``how to characterize
+the variability intrinsic to the finite-sized sample''.
+
+Hence the \textbfit{``sampling theory''} is
+\begin{enumerate}
+  \item characterizing and analyzing samples from a population, and
+  \item employing such results to make statistical inference statements about
+  the population.
+\end{enumerate}
+There are three central concepts to sampling:
+\begin{enumerate}
+  \item The random sample
+  \item The statistic
+  \item The distribution of statistic (sampling distribution)
+\end{enumerate}
+
+\subsection{The Random Sample}
+\begin{definition}{\bf Random Sample} \\
+  Let $X_1, X_2, X_3, \ldots, X_n$ denotes $n$ mutually independent random
+  variables, each of which has the same, but possibly unknown, probability
+  distribution $P_X$. Then the random variable
+  \begin{equation}
+    X_1, X_2, X_3, \ldots, X_n
+  \end{equation}
+  constitute a \textit{random sample} from a distribution.
+  Alternatively, $X_1, X_2, X_3, \ldots, X_n$ are called independent and
+  identically distributed (iid) random variables with pdf $f(x)$, which
+  is given by
+  \begin{equation}
+    f(x_1, x_2, \ldots, x_n | \boldsymbol{\theta})
+    = \prod_{i=1}^{n} f(x_i | \boldsymbol{\theta})
+  \end{equation}
+\end{definition}
+
+The motivation of the definition of the random sample is as follows:
+\begin{itemize}
+  \item \textbf{Finite observations representative of population:} \\
+  Consider a set of observations (data) $\{x_1 ,x_2, \ldots, x_n\}$ drawn
+  from a population of size $N$ (where $N$ is possibly infinite), then the
+  sample given to us is representative of the population.
+  \item \textbf{Equiprobable choice of $n$-sized subset:} \\
+  If all possible $n$-sized subsets of the $N$ elements of the population have
+  equal probabilities of being chosen (i.e., no particular subset will
+  preferentially favor any particular aspect of the population), then the
+  observations constitute a \textit{random sample} from the population.
+\end{itemize}
+
+\begin{example}{\it exponential random sample} \\
+  Let $X_1, X_2, \ldots, X_n \quad \sim \quad \textrm{iid } exponential(\beta)$.
+  Then,
+  \begin{equation*}
+    \begin{split}
+      f(x_1, x_2, \ldots, x_n | \beta)
+      &= \prod_{i=1}^{n} f(x_i | \beta) \\
+      &= \prod_{i=1}^{n} \frac{1}{\beta} \exp\left({-\frac{x_i}{\beta}}\right) \\
+      &= \frac{1}{\beta} \exp{\left( \frac{1}{\beta} \sum_{i=1}^{n} x_i \right)}
+    \end{split}
+  \end{equation*}
+\end{example}
+
+\clearpage
+\subsection{Statistic and Its Distribution}
+\begin{definition}{\bf Statistics} \\
+  Let $X_1, X_2, X_3, \ldots, X_n$ be a random sample of size $n$ from a
+  population and let $T(x_1, x_2, \ldots, x_n)$ be a real-valued or
+  vector-valued function. Then, the random variable or random vector
+  \begin{equation}
+    Y=T(X_1, X_2, X_3, \ldots, X_n)
+  \end{equation}
+  is called a statistic. The probability distribution of a statistic $Y$
+  is called the sampling distribution of $Y$.
+\end{definition}
+
+
+
+It turns out that most of the unknown parameters of population distribution
+are contained in the mean $\mu$ and the variance $\sigma^2$ of the distribution
+i.e., once the $\mu$ and $\sigma^2$ are known, the naturally occuring parameters
+can then be deduced. It is therefore customary for \textit{sampling theory}
+to concentrate on the sampling distributions of the mean and of the variance.
+The following statistics represent the mean and variance of a population.
+\begin{itemize}
+  \item Sample mean $\bar{X}$:
+  \begin{equation}
+    \bar{X} = \frac{X_1 + X_2 + X_3 + \cdots + X_n}{n}
+    = \frac{1}{n} \sum_{i=1}^{n} X_i
+  \end{equation}
+  \item Sample variance $S^2$:
+  \begin{equation}
+    S^2 = \frac{1}{n-1} \sum_{i=1}^{n} {\{X_i-\bar{X}\}}^2
+  \end{equation}
+  \item Sample standard deviation $S$:
+  \begin{equation}
+    S = \sqrt{S^2}
+  \end{equation}
+\end{itemize}
+
+\begin{properties}
+  Useful facts about $\bar{X}, S^2, S$:
+  \begin{enumerate}
+    \item $\min_{a} \sum_{i=1}^{n} {(x_i - a)}^2 = \sum_{i=1}^{n} {(x_i - \bar{x})}^2$ \\
+    \item $(n-1)s^2 = \sum_{i=1}^{n} {(x_i - \bar{x})}^2  = \sum_{i=1}^{n} x_i^2 - n{\bar{x}}^2$
+    \item $\mathbb{E}[\bar{X}] = \mathbb{E}[X_1] = \mu, Var[X_1] = \sigma^2$
+    \item $Var[\bar{X}] = \frac{\sigma^2}{n}$
+    \item $\mathbb{E}[S^2] = \sigma^2$
+  \end{enumerate}
+\end{properties}
+
+\clearpage
+\begin{prf}
+  \begin{enumerate}
+    \item At first, isolate a variable $x_i$ and $a$ by manipulating the equation.
+    \begin{equation*}
+      \begin{split}
+        \sum_{i=1}^{n} {(x_i - a)}^2
+        &= \sum_{i=1}^{n} {(x_i - \bar{x} + \bar{x} - a)}^2 \\
+        &= \sum_{i=1}^{n} {(x_i - \bar{x})}^2
+         + 2 \sum_{i=1}^{n} (x_i - \bar{x})(\bar{x} - a)
+         + \sum_{i=1}^{n} {(\bar{x} - a)}^2 \\
+        &= \sum_{i=1}^{n} {(x_i - \bar{x})}^2 + \sum_{i=1}^{n} {(\bar{x} - a)}^2
+      \end{split}
+    \end{equation*}
+    Now, let
+    \begin{equation*}
+      \begin{split}
+        U(x) &\coloneqq \sum_{i=1}^{n} {(x_i - \bar{x})}^2\\
+        V(a) &\coloneqq \sum_{i=1}^{n} {(\bar{x} - a)}^2
+      \end{split}
+    \end{equation*}
+    where $x = (x_1, x_2, \ldots, x_n)$. Clearly, we can see that the value of
+    $U(x)$ change only depends on the data ${\{x_i\}}_{i=1}^{n}$. Since we want
+    to find minimum value with respect to $a$, the first term $U(x)$ is out of
+    concern, we therefore can take $a = \bar{x}$ to vanish the second term $V$
+    (i.e., $V(0) = 0$). Hence the minimum value is given by
+    \begin{equation*}
+      \min_{a} \sum_{i=1}^{n} {(x_i - a)}^2
+      = \sum_{i=1}^{n} {(x_i - \bar{x})}^2 + V(0)
+      = \sum_{i=1}^{n} {(x_i - \bar{x})}^2
+    \end{equation*}
+    \item We may see that
+    \begin{equation*}
+      \begin{split}
+        E[S^2]
+        &= \mathbb{E}\left[ \frac{1}{n-1} \sum_{i=1}^{n} {\left( X_i - \bar{X} \right)}^2 \right]
+         = \mathbb{E}\left[ \frac{1}{n-1} \sum_{i=1}^{n} {\left( X_i^2 - 2X_i\bar{X} + \bar{X}^2 \right)} \right] \\
+        &= \mathbb{E}\left[ \frac{1}{n-1} \left( \sum_{i=1}^{n} X_i^2 - n \bar{X}^2 \right) \right]
+         = \frac{1}{n-1} \left( \sum_{i=1}^{n} \mathbb{E}[X_i^2]
+         - n \mathbb{E}[\bar{X}^2] \right) \\
+      \end{split}
+    \end{equation*}
+    Since $\forall i = 1, 2, \ldots, n, \quad \sigma^2 = \mathbb{E}[X_i^2] - \mu^2$
+    and $\sigma_{\bar{X}}^2 = \mathbb{E}[\bar{X}^2] + \mu_{\bar{X}}^2$ where
+    $\sigma_{\bar{X}}^2 = \sigma^2 / n$ and $\mu_{\bar{X}}^2 = \mu$, then
+    \begin{equation*}
+      \begin{split}
+        E[S^2]
+        &= \frac{1}{n-1} \left( \sum_{i=1}^{n} \mathbb{E}[X_i^2]
+         - n \mathbb{E}[\bar{X}^2] \right) \\
+        &= \frac{1}{n-1} \left( n(\sigma^2 + \mu^2) - n (\frac{\sigma^2}{n} + \mu^2)\right) \\
+        &= \sigma^2
+      \end{split}
+    \end{equation*}
+  \end{enumerate}
+\end{prf}
+
+Before we go on to examine the \textit{sampling distribution}, let us consider
+the following statement of the problem of statistical inference:
+\begin{itemize}
+  \item \textbf{Random Variable $X$ $\leftarrow$ complete $P_X$ $\leftarrow$ entire population} \\
+  The distribution $P_X$, or equivalently pdf $f(x)$ with its parameter
+  $\boldsymbol{\theta}$, characterizes the random variable $X$. Therfore, were
+  it possible to observe the complete population in its entirety, we would be
+  able to \textit{constuct the complete $P_X$}, or $f(x|\boldsymbol{\theta})$.
+  \item \textbf{no entire population, just finite sample $\rightarrow$ inference about $P_X$ or $\theta$} \\
+  Unfortunately, since only a finite sample from the population is
+  available via experiment or observation, we should determine the distribution
+  $P_X$ from that finite sample ${\{x_i\}}_{i=1}^{n}$. In the case where we
+  know the form of the pdf $f(x)$, we are left with the issue of determining
+  the unknown parameter $\boldsymbol{\theta}$ \textit{making inference about
+  the population parameter $\boldsymbol{\theta}$} from sample data.
+  \item \textbf{inference $\leftarrow$ statistics $\leftarrow$ random sample} \\
+  We make this inferences by investigating \textit{random samples},
+  using appropriate \textit{statistics} (quatities calculated from the random
+  samples) that will provide information about the parameters.
+  \item \textbf{statistics $\rightarrow$ sample distribution $\rightarrow$ statement about $P_X$ or $\theta$} \\
+  This statistics, which enable us to determine the unknown parameters,
+  are themselves \textit{random variables}. Hence, \textit{the distribution
+  of such statistics} then enable us to make probability statements about
+  these statistics and hence the unknown parameters.
+\end{itemize}
+
+Hence the primary utility of the statistics and its distribution is in
+determining unknown population parameters from samples and quantifying
+the inherent variability.
+
+\subsection{The Sampling Distribution}
+
+Because a statistic is an observable function of random variables,
+determining sampling
+distributions requires techniques for obtaining distributions of functions
+of random variables. The general problem of interest may be started as follows:
+
+
+Given the joint pdf for $n$ random variables $(X_1, X_2, \ldots, X_n)$,
+let $Y$ be a random vector given by $Y = (Y_1, Y_2, \ldots, Y_m)$ and find
+the pdf $f_Y(y)$ for the random vector $Y$ defined as
+\begin{equation*}
+  Y = \Phi(X)
+\end{equation*}
+where $\Phi$ is a transformation given by
+\begin{equation*}
+  \begin{split}
+    \Phi: \mathbb{R}^n &\rightarrow \mathbb{R}^m \\
+                     X &\mapsto     Y
+  \end{split}
+\end{equation*}
+We may be alternatively denote $Y = \Phi (X)$ as follows
+\begin{equation*}
+  \begin{gathered}
+    Y_1 = \phi_1 (X) \\
+    Y_2 = \phi_2 (X) \\
+    Y_3 = \phi_3 (X) \\
+    \cdots           \\
+    Y_m = \phi_m (X) \\
+  \end{gathered}
+\end{equation*}
+
+\begin{enumerate}
+  \item \textbf{From $\Phi$ and find $\Psi$} \\
+  From this, we can find inverse transformation $\Psi$ that $X = \Psi(Y)$, i.e.,
+  \begin{equation*}
+    \begin{gathered}
+      X_1 = \psi_1 (Y) \\
+      X_2 = \psi_2 (Y) \\
+      X_3 = \psi_3 (Y) \\
+      \cdots           \\
+      X_n = \psi_n (Y) \\
+    \end{gathered}
+  \end{equation*}
+  \item \textbf{Evaluate Jacobian $J_{\Psi}(X)$ and it's determinant $||J||$} \\
+  \begin{equation*}
+    J_{\Psi}(X)
+    = \frac{\partial \Psi}{\partial y}
+    =
+    \begin{bmatrix}
+      \frac{\partial \psi_1}{\partial y_1} & \cdots & \frac{\partial \psi_1}{\partial y_m} \\
+      \vdots & \ddots & \vdots \\
+      \frac{\partial \psi_n}{\partial y_1} & \cdots & \frac{\partial \psi_n}{\partial y_m}
+    \end{bmatrix}
+  \end{equation*}
+  \item \textbf{Find $f_Y(y)$} \\
+  From definition of pdf, $f_Y(y)$ is defined by
+  \begin{equation*}
+    P[Y \in A] = F_Y(y) = \int_{\infty}^{y} f_Y(y) \;dy
+  \end{equation*}
+  From our existing knowledge about $f_X(x)$, we can evalute any probability
+  $P_X[X \in B]$ for all $B \in \mathcal{B}(\mathbb{R}^n)$. We then can
+  evaluate $P[Y \in A]$ for any given subset $A \in \mathcal{B}(\mathbb{R}^m)$
+  also as follows
+  \begin{equation*}
+    \begin{split}
+      P[Y \in A]
+      &= P[X \in \Psi(A)] \\
+      &= \int_{\Psi(A)} f_X(x) \;dx \\
+      &= \int_{A} f_X(\Psi(y)) \; ||J||dy \\
+    \end{split}
+  \end{equation*}
+  where $||J||=\frac{\partial \Psi}{\partial y}$. Therefore, by definition,
+  \begin{equation*}
+    f_Y(y) = f_X(\Psi(y)) ||J||
+  \end{equation*}
+\end{enumerate}
+
+
+
+
+\subsubsection{Some Important Sampling Distribution Results}
+\begin{enumerate}
+  \item Linear combination
+\end{enumerate}
+
+\printbibliography
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}

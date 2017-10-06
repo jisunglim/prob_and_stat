@@ -1,0 +1,74 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.7 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist[entry]{nty/global/}
+    \entry{IPSUR-2010}{book}{}
+      \name{author}{1}{}{%
+        {{hash=8e5659917d0d5ff23aac009c5f09eefd}{%
+           family={G.\bibnamedelimi Jay\bibnamedelima Kerns},
+           family_i={G\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim K\bibinitperiod},
+           given={Youngstown\bibnamedelimb State\bibnamedelima University},
+           given_i={Y\bibinitperiod\bibinitdelim S\bibinitperiod\bibinitdelim U\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {G. Jay Kerns}%
+      }
+      \strng{namehash}{8e5659917d0d5ff23aac009c5f09eefd}
+      \strng{fullhash}{8e5659917d0d5ff23aac009c5f09eefd}
+      \field{sortinit}{G}
+      \field{sortinithash}{1c854ef9177a91bf894e66485bdbd3ed}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{\url{http://ipsur.org/index.html}}
+      \field{title}{Introduction to Probability and Statistics Using R}
+      \field{year}{2010}
+    \endentry
+    \entry{RP-Babatunde-2009}{book}{}
+      \name{author}{1}{}{%
+        {{hash=45086460bc979d78c5fad932d4503459}{%
+           family={Ogunnaike},
+           family_i={O\bibinitperiod},
+           given={Babatunde\bibnamedelima A.},
+           given_i={B\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {CRC Press}%
+      }
+      \strng{namehash}{45086460bc979d78c5fad932d4503459}
+      \strng{fullhash}{45086460bc979d78c5fad932d4503459}
+      \field{sortinit}{O}
+      \field{sortinithash}{7803d2715d5e795e70382b084ab8d00e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Random Phenomena: Fundamentals of Probability and Statistics for Engineers}
+      \field{year}{2009}
+    \endentry
+    \entry{ONLINE-1}{misc}{}
+      \field{sortinit}{W}
+      \field{sortinithash}{99e3ba1b3f78bb6f073e7fa7ac11636b}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{\url{https://en.wikipedia.org/wiki/First_principle}}
+      \field{note}{Accessed: 2017-04-17}
+      \field{title}{WIKI, First Principles}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+

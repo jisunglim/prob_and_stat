@@ -1,0 +1,610 @@
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0 in}
+\setlength{\evensidemargin}{0 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,graphicx,mathtools}
+\usepackage[document]{ragged2e}
+\usepackage[Euler]{upgreek}
+\usepackage{amsthm}
+\usepackage{mdframed}
+
+\usepackage[backend=biber]{biblatex}
+\addbibresource{ref.bib}
+
+\graphicspath{{./rsc/}{./rsc/pdf/}{./rsc/svg/}}
+
+\expandafter\def\expandafter\normalsize\expandafter{%
+    \normalsize
+    \setlength\abovedisplayskip{15pt}
+    \setlength\belowdisplayskip{15pt}
+    \setlength\abovedisplayshortskip{15pt}
+    \setlength\belowdisplayshortskip{15pt}
+}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% Narrower margin
+%
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+  \pagestyle{myheadings}
+  \thispagestyle{plain}
+  \newpage
+  \setcounter{lecnum}{#1}
+  \setcounter{page}{1}
+  \noindent
+  \begin{center}
+    \framebox{
+      \vbox{
+        \vspace{2mm}
+        \hbox to 6.28in { {\bf MAT2013: Probability and Statistics~\cite{IPSUR-2010}~\cite{RP-Babatunde-2009} \hfill Spring 2017} }
+        \vspace{4mm}
+        \hbox to 6.28in { {\Large \hfill Lecture #1: #2  \hfill} }
+        \vspace{2mm}
+        \hbox to 6.28in { {\it Lecturer: #3 \hfill Scribes: #4\/} }
+        \vspace{2mm}
+      }
+    }
+  \end{center}
+  \markboth{Lecture #1: #2}{Lecture #1: #2}
+  {\textbf{Scribes}}: {
+    Jisung Lim,
+    \textit{B.S. Candidate of Industrial Engineering
+    in Yonsei University, South Korea.}
+  }
+
+  {\textbf{Disclaimer}}: {
+    \textit{These notes have not been subjected to the
+    usual scrutiny reserved for formal publications.  They may be distributed
+    outside this class only with the permission of the Instructor.}
+  }
+  \vspace*{4mm}
+}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+
+%%%% Box
+\newmdenv[leftline=false,rightline=false]{tb}
+\newenvironment{hlbox}
+{
+  \vspace*{5mm}
+  \begin{tb}
+}
+{
+  \end{tb}
+  \vspace*{1mm}
+}
+
+% Use these for theorems, lemmas, proofs, etc.
+\theoremstyle{definition}
+
+% Definition
+\newtheorem{definition}{Definition}[section]
+\AtEndEnvironment{definition}{\qed}%
+
+\newenvironment{bdef}
+{\vspace*{5mm}\begin{tb}\begin{definition}}
+{\end{definition}\end{tb}\vspace*{2mm}}
+
+% Theorem
+\newtheorem{theorem}{Theorem}[section]
+\AtEndEnvironment{theorem}{\qed}%
+
+\newenvironment{bthrm}
+{\vspace*{5mm}\begin{tb}\begin{theorem}}
+{\end{theorem}\end{tb}\vspace*{2mm}}
+
+% Corollary
+\newtheorem{corollary}[theorem]{Corollary}
+\AtEndEnvironment{corollary}{\qed}%
+
+\newenvironment{bcrly}
+{\vspace*{5mm}\begin{tb}\begin{corollary}}
+{\end{corollary}\end{tb}\vspace*{2mm}}
+
+% Lemma
+\newtheorem{lemma}[theorem]{Lemma}
+\AtEndEnvironment{lemma}{\qed}%
+
+\newenvironment{blma}
+{\vspace*{5mm}\begin{tb}\begin{lemma}}
+{\end{lemma}\end{tb}\vspace*{2mm}}
+
+% Proposition
+\newtheorem{proposition}[theorem]{Proposition}
+\AtEndEnvironment{proposition}{\qed}%
+
+\newenvironment{bprpn}
+{\vspace*{5mm}\begin{tb}\begin{proposition}}
+{\end{proposition}\end{tb}\vspace*{2mm}}
+
+% Claim
+\newtheorem{claim}[theorem]{Claim}
+\AtEndEnvironment{claim}{\qed}%
+
+\theoremstyle{remark}
+\newtheorem{properties}[theorem]{Properties}
+
+%%%% Define example tools
+\theoremstyle{remark}
+\newtheorem{innerexample}[theorem]{Example}
+\makeatletter
+\patchcmd{\endinnerexample}{\endtrivlist}{\endlist}{}{}
+\newenvironment{example}
+ {\patchcmd{\@thm}{\trivlist}{\list{}{\leftmargin=3em \rightmargin=3em}}{}{}%
+  \vspace*{10\p@}
+  \innerexample\pushQED{\hfill\ensuremath{\Diamond}}}
+ {\popQED\endinnerexample}
+\makeatother
+
+\newenvironment{exskt}
+{\begin{list}{}{\leftmargin=3em \rightmargin=3em}\item{\bf Sketch.}}
+{\hfill\ensuremath{\qed}\vspace*{5mm}\end{list}}
+
+\newenvironment{exprf}
+{\begin{list}{}{\leftmargin=3em \rightmargin=3em}\item{\bf Proof.}}
+{\hfill\ensuremath{\qed}\vspace*{5mm}\end{list}}
+
+\newenvironment{exsol}
+{\begin{list}{}{\leftmargin=3em \rightmargin=3em}\item{\bf Solution.}}
+{\hfill\ensuremath{\qed}\vspace*{5mm}\end{list}}
+
+%%%% Define solving tools
+\newenvironment{skt}{{\bf Sketch:}}{}
+\newenvironment{prf}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newenvironment{sol}{{\bf Solution:}}{\hfill\rule{2mm}{2mm}}
+
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+% Define operators
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\minimize}{Minimize}
+\DeclareMathOperator*{\maximize}{Maximize}
+
+\DeclareMathOperator*{\dotcup}{\dot{\cup}}
+
+% Define Logical operators
+\providecommand{\land}{\wedge}
+\providecommand{\lior}{\vee}
+\providecommand{\lxor}{\veebar}
+\providecommand{\limpl}{\rightarrow}
+\providecommand{\lImpl}{\Rightarrow}
+\providecommand{\liff}{\leftrightarrow}
+\providecommand{\lIff}{\Leftrightarrow}
+
+% Define mathbb
+\newcommand\E{\mathbb{E}}
+
+% Define mathbfit
+\DeclareMathAlphabet{\mathbfit}{OML}{cmm}{b}{it}
+\DeclareMathAlphabet{\mathbfsf}{\encodingdefault}{\sfdefault}{bx}{n}
+
+% Define textbfit
+\makeatletter
+\DeclareRobustCommand\bfseriesitshape{
+  \not@math@alphabet\itshapebfseries\relax
+  \fontseries\bfdefault
+  \fontshape\itdefault
+  \selectfont
+}
+\makeatother
+\DeclareTextFontCommand{\textbfit}{\bfseriesitshape}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{6}{Statistics: Introduction}{Jae Guk, Kim}{Jisung Lim}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+
+
+% **** YOUR NOTES GO HERE:x
+\justify
+Our study begins in this chapter with an introduction of statistics first as a
+conceptual framework complementary to---and dependent on---probability. We then
+provide a brief overview of the components of this ``Statistical Analysis''
+framework, as a prelude to the detailed study of each of these components in the
+remaining chapters.
+
+\section{From Probability to Statistics}
+\subsection{Random Phenomena and Finite Data Sets}
+
+\textbfit{Three entities} for a systematic study of randomly varying phenomena:
+\begin{enumerate}
+
+  \item $X$: \textit{the actual variable of interest.}
+  \begin{itemize}
+    \item This is the ``Random Variable.'' It is an abstract, conceptual entity.
+  \end{itemize}
+
+  \item ${\{ x_i \}}_{i=1}^{n}$: \textit{$n$ individual observations.}
+  \begin{itemize}
+    \item A specific set out of many other possible \textit{realizations of
+    the random variable} $X$.
+    \item This set is commonly referred to as the ``Data'' and it is the
+    only entity available in practice.
+  \end{itemize}
+
+  \item $f(x)$: \textit{aggregate (or ensemble) description of the random variable.}
+  \begin{itemize}
+    \item This is the theoretical model of `how \underline{the probability of
+    obtaining various results} are \underline{distributed} \underline{over}
+    the entire range of \underline{all possible values observable for $X$}' and
+    it is called ``Probability Distribution Function (or PDF).''
+    \item We saw that it consists of a functional form, $f(x)$, and
+    characteristic parameter, says $\boldsymbol{\theta}$; it is therefore more
+    completely represented as $f(x|\boldsymbol{\theta})$, which literally reads
+    ``$f(x)$ \textit{given} $\boldsymbol{\theta}$.''
+    (e.g., $\boldsymbol{\theta} = (\mu, \sigma^2)$ for Gaussian dist.)
+  \end{itemize}
+\end{enumerate}
+
+\textbfit{What we've done}:
+\begin{itemize}
+  \item Probabilistic random phenomena analysis is based entirely on $f(x)$.
+  \item This allowed us to abandon the impossible task of predicting an
+  intrinsically unpredictable entity in favor of the more mathematically
+  tractable task of computing the probabilities of observing the randomly
+  varying outcomes.
+  \item We, until now, have been assumed the availability of the complete $f(x)$,
+  i.e., $f(x|\boldsymbol{\theta})$ with known $\boldsymbol{\theta}$.
+  \item This allowed us to focus on the \textit{first} task: computing
+  probabilities and carrying out analysis, given any functional form and
+  accompanying characteristic parameters, aggregately $f(x|\boldsymbol{\theta})$,
+  assumed known.
+\end{itemize}
+
+\textbfit{Our natural question is}:
+\begin{itemize}
+  \item Where either the functional form $f(x)$, or the specific characteristic
+  parameter values $\boldsymbol{\theta}$ come from.
+  \item In actual practice, what is really available about any random variable
+  of interest?
+  \item How does one go about obtaining the complete $f(x)$ required for random
+  phenomena analysis?
+\end{itemize}
+
+\textbfit{Actually, in practice}:
+\begin{itemize}
+  \item For any specific random varying phenomenon of interest, the theoretical
+  description, $f(x)$, is never completely available.
+  \item This is usually because the characteristc parameters assocated with
+  the particular random variable in question are unknown.
+  \item In practice, only finite data in the form of a set of observations
+  ${\{ x_i \}}_{i=1}^{n}$ is available.
+\end{itemize}
+
+\textbfit{The problem at hand is}:
+\begin{itemize}
+  \item To apply the theory of random phenomena analysis successfully to
+  practical problems, how the complete $f(x)$ to be determiend from finite
+  data?
+  \item How to analyze randomly varying phenomena on the basis of finite data
+  sets?
+\end{itemize}
+
+\textbfit{Now, this is the domain of Statistics! Then, what is statistics?}
+\begin{itemize}
+  \item In a sense of the reverse problem of probability.
+  \begin{itemize}
+    \item With probability, $f(x)$---the functional form along with the parametes
+    ---is given, and analysis involves determining the probabilities of obtaining
+    specific observations ${\{ x_i \}}_{i=1}^{n}$ from the random variable $X$.
+    \item The reverse is the case with statistics: ${\{ x_i \}}_{i=1}^{n}$ is
+    given, and analysis involves determining the appropriate (and complete)
+    $f(x)$---the functional form and the parameters---for the random variable
+    $X$ that generated the given specific observation.
+  \end{itemize}
+
+  \item The theoretical concept of the pdf, $f(x)$, plays a significant role
+  in determining, from the finite data set, the most likely underlying complete
+  $f(x)$, and to qunatify the associated uncertainty.
+
+  \item In this sense, ``Statistics'' is referred to as a methodology for
+  \begin{itemize}
+    \item \textit{inferring} the characteristics of the complete pdf, $f(x)$, from
+    finite data set ${\{ x_i \}}_{i=1}^{n}$,
+    \item and \textit{qunatifying} the associated uncertainty.
+  \end{itemize}
+
+  \item Our focus of interest is
+  \begin{itemize}
+    \item In \textit{Probability}, the ``Random Variable'', says $X$,
+    as an abstract entity.
+    \item In \textit{Statistics}, the finite ``Data Set'', says ${\{ x_i \}}_{i=1}^{n}$,
+    as a specific realization of $X$.
+  \end{itemize}
+\end{itemize}
+
+\begin{example}{Three times coin tossing} \\
+
+
+  \textbfit{What we've been doing before}:
+  \begin{enumerate}
+    \item Establishing probability space
+    \begin{itemize}
+      \item Random experiment: Tossing a coin three times.
+      \item Sample space: $\Omega = \{ HHH, HHT, HTH, THH, HTT, THT, TTH, TTT \}$
+      \item $\sigma$-\textit{algebra}: $\mathcal{F} = 2^{\Omega}$
+      \item Probability measure: $\mathbb{P}[A] = \frac{|A|}{|\Omega|} \quad \forall A \in \mathcal{F}$ ($|\cdot|$: cardinality of a set).
+    \end{itemize}
+    \item Define random variable $X: (\Omega, \mathcal{F}) \rightarrow (\mathbb{R}, \mathcal{B})$
+    \begin{equation*}
+      X = \textrm{The number of observed tails in 3 tossing}
+    \end{equation*}
+    \item Define $P_X$
+    \begin{equation*}
+      \forall B \in \mathcal{B},\quad P_X(B)
+      = \mathbb{P}[X^{-1}(B)]
+      = \mathbb{P}[\{ \omega \in \Omega : X(\omega) \in B \}]
+    \end{equation*}
+    \item But one may skip the steps 1--3 if a random phenomenon has pre-existing
+    ``canned'' model. In this case, this specific randomly varying phenomenon
+    follows the binomial distribution with $n = 3$ and $p$ as the characteristic
+    parameter. The ensemble description is the binomial pdf:
+    \begin{equation*}
+      f(x|p) = \binom{3}{x} p^x {(1-p)}^{3-x} ;\; x = 0, 1, 2, 3
+    \end{equation*}
+    Eventually, we've found the theoretical ensemble description $f(x)$.
+    \item Let us set the parameter $p$ with an ideal value $\frac{1}{2}$, then
+    \begin{equation*}
+      \begin{split}
+        P(X = 0) &= 1/8 \\
+        P(X = 1) &= 3/8 \\
+        P(X = 2) &= 3/8 \\
+        P(X = 3) &= 1/8
+      \end{split}
+    \end{equation*}
+  \end{enumerate}
+
+  \textbfit{In practice}:
+  \begin{enumerate}
+    \item Observe the data: \\
+    Let us observe the result $S$ of 10 independent random experiments as a
+    specific experimental realization of the random variable $X$.
+    \begin{equation*}
+      S=\{0, 1, 3, 2, 2, 1, 0, 1, 2, 2\}
+    \end{equation*}
+    \item Evaluate relative frequency: \\
+    Strictly from the limited data, the various relative frequencies of
+    occurrence are given by
+    \begin{equation*}
+      \begin{split}
+        F_{\textrm{rel}}(0) &= 0.2 \\
+        F_{\textrm{rel}}(1) &= 0.3 \\
+        F_{\textrm{rel}}(2) &= 0.4 \\
+        F_{\textrm{rel}}(3) &= 0.1
+      \end{split}
+    \end{equation*}
+    \item Approximate the true probability distribution $P_X$ with $F_{\textrm{rel}}$: \\
+    If one can assume that this data set is ``representative'' of typical
+    behavior of the random variable, the observed relative frequency
+    $F_{\textrm{rel}}$ can be considered as an approximate representation of
+    true probability distribution $P_X$.
+  \end{enumerate}
+
+  \textbfit{Hence, the implication is that}: the data set appears to be somewhat
+  \textbf{consistent with the theoretical model} when $p = 0.5$.
+\end{example}
+
+\subsection{Finite Data Sets and Statistical Analysis}
+Three concepts are central to statistical analysis: population, sample, and
+statistical inference.
+\begin{enumerate}
+  \item \textit{Population}: This is the complete collection of all the data
+  obtainable from a random variable of interest.
+  \begin{itemize}
+    \item Clearly, it is impossible to `realize' the population in actual
+    practice.
+    \item But as a conceptual entity, it serves a critical purpose: \textit{The full
+    observational ``realization''} of the random variable $X$.
+    \item It is to statistics what the sample space is to probability theory.
+  \end{itemize}
+  \item \textit{Sample}: A \textit{specific} set of actual observations obtained
+  upon performance of an experiment.
+  \begin{itemize}
+    \item By definition, this is a finite subset of data selected from the
+    population of interest.
+    \item It is the only information that is actually available
+    \textit{in practice}.
+  \end{itemize}
+  \item \textit{Statistical Inference}: Any statement made about the population
+  on the basis of information extracted from a sample.
+  \begin{itemize}
+    \item Because the sample will never encompass the entire population, such
+    statements must include a measure of the ``unavoidable associated
+    uncertainty''.
+  \end{itemize}
+\end{enumerate}
+
+
+\textbfit{In the probability theory}
+\begin{itemize}
+  \item In the probability theroy, we focus on the random variable $X$.
+  \item Then we utilizes the sample space $(\Omega, \mathcal{F})$ and the state
+  space $(\mathbb{R}, \mathcal{B})$ as the basis for developing the theoretical ensemble description
+  $f(x)$.
+\end{itemize}
+
+\textbfit{In practice}
+\begin{itemize}
+  \item For any specific problem, the focus shifts to the actual observed data,
+  $\{x_i\}_{i=1}^{n}$.
+  \item The equivalent conceptual entity in statistics becoems the population---the
+  observational ensemble to be described and characterized.
+  \item While the sample space of the probability theory can be specified
+  \textit{a-priori}, but the population in statistics refers to observational
+  data, making it a specific, \textit{a-posteriori} entity.
+\end{itemize}
+
+\begin{example}{3 coin tossing revisit} \\
+  \textbf{What we can know before any experiment.}\\
+  Before any actual experiments are performed, we know the support of a random
+  variable, given by
+  \begin{equation*}
+    \textit{support}: V_X = \{ x \in \mathbb{R} : f_X(x) > 0 \} = \{0, 1, 2, 3\}.
+  \end{equation*}
+  \begin{itemize}
+    \item $V_X$ indicates that with each performance of the experiment, the
+    outcome will be one of the 4 numbers contained in it.
+    \item We can compute probabilities of observing any one of the 4 possible
+    alternatives.
+  \end{itemize}
+
+  \textbf{The unknown characteristic parameter}\\
+  For the generic coin with parameter $p$, we are able to obtain an
+  explicit expression for how the outcome probabilities are distributed over
+  the values in $V_X$.
+  \begin{itemize}
+    \item For a specific coin for which, say, $p = 0.5$, we can compute the
+    probabilities of obtaining 0, 1, 2 or 3 tails, as we just did in
+    \textit{Example} 6.1.1.
+    \item But in practice, the true value of $p$ associated with a specific
+    coin is not known \textit{a-priori}; it must be determined from experimental
+    data.
+  \end{itemize}
+
+  \textbf{Finite sample from infinite population}\\
+  We may consider a single, 10-observation sample for the specific ``coin in
+  question'', given by
+  \begin{equation*}
+    S_1 = \{ 0, 1, 3, 2, 2, 1, 0, 1, 2, 2 \}
+  \end{equation*}.
+  \begin{itemize}
+    \item A specific sample is considered to be drawn from the conceptual
+    population of all such data obtainable from this specific coin characterized
+    by the true, but unknown, value $p$.
+    \item Although finite, $S_1$ contains information about the true value of the
+    characteristic parameter $p$ associated with this particular coin.
+    \item Determining appropriate estimates of this true value is a major
+    objective of statistical analysis.
+  \end{itemize}
+
+  \textbf{Different sample from the same population}\\
+  Because of the finiteness of sample data, a second series of such experminets
+  will yield a \textit{different} set of results, for example,
+  \begin{equation*}
+    S_2 = \{ 2, 1, 1, 0, 3, 2, 2, 1, 2, 1 \}
+  \end{equation*}
+  \begin{itemize}
+    \item This is another sample from the same population, but as a result of
+    inherent variability, it is different from $S_1$.
+    \item Nevertheless, this new sample $S_2$ also contains information about
+    the unknown characteristic parameter, $p$.
+  \end{itemize}
+
+  \textbf{How about another population}\\
+  Next consider \textit{another} coin, says that being characterized by $p=0.8$,
+  and suppose that after performing the 3 coin toss experiment, say $n=12$ times,
+  we obtain:
+  \begin{equation*}
+    S_3 = \{ 3, 2, 2, 3, 1, 3, 2, 3, 3, 3, 2, 2 \}
+  \end{equation*}
+  \begin{itemize}
+    \item This set of results is considered to be just one of an infinite number
+    of other samples that could potentially be drawn from the population
+    characterized by $p=0.8$.
+    \item As before, it also contains information about the value of the unknown
+    population parameter.
+  \end{itemize}
+
+  \textbf{Summary}\\
+  \begin{enumerate}
+    \item \textit{Invariable sample space}:
+    \begin{itemize}
+      \item With probability, the support of the random variable for this
+      example is finite, specifiable \textit{a-priori}.
+      \item It remains as given no matter what the value of the population
+      parameter $p$ is.
+    \end{itemize}
+
+    \item \textit{Variable population}:
+    \begin{itemize}
+      \item Not so with the population. It is finite and its elements depend on
+      the specific value of the characteristic population parameter.
+      \item In the case of $p=0.8$, the relative rarity of `1' in the sample
+      $S_3$ indicates that the population of all possible observations from
+      the 3 coin toss experiment will very rarely contain the number `1'.
+      \item Information about the true, but unkown, value of the characteristic
+      parameter, $p$, associated with each coin's population is contained in
+      each finite data set.
+    \end{itemize}
+  \end{enumerate}
+\end{example}
+
+In a general sense, the cases that we will confront til now are
+\begin{enumerate}
+  \item The form of the PDF $f(x)$ is known, but the parameter $\boldsymbol{\theta}$ is
+  unknown.
+  \item Data is available, but in the form of only finite-sized samples.
+  \item Whereas, the full ensemble characterization we seek is of the entire
+  population.
+\end{enumerate}
+That is, we are left with no other choice but to use the samples, even though
+finite in size, to characterize the population.
+\begin{itemize}
+  \item \textbf{The population}---the ``full observational manifestation''
+  of the random variable $X$---is that ideal, conceptual entity one wishes
+  to characterize.
+  \item The objective of random phenomena analysis is to \textbf{characterize
+  the population} completely with the pdf $f(x|\boldsymbol{\theta})$, where
+  $\boldsymbol{\theta}$ represents the characteristic parameters of the
+  specific population in question.
+  \item However, because it is impossible to realize the population in its
+  entirety via experimentation, one must therefore settle for characterizing
+  it by drawing \textbf{statistical inference} from a \textit{finite sample
+  subset}.
+  \item Clearly, the success of such an endeavor depends on \textit{the sample}
+  being \textbf{``representative'' of the population}.
+\end{itemize}
+Statistics therefore involves not only systematic \textit{analysis} of data,
+but also systematic data \textit{collection} in such a way that the sample
+truly reflects the population, thereby ensuring that the sought-after
+information will be contained in the sample.
+
+
+
+
+
+
+
+
+\printbibliography
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}
